@@ -1,0 +1,92 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Agdasima&family=Poppins&display=swap');
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    /* background: linear-gradient(to bottom right, #70ffcf, #49fcc0); */
+    background-image: url(../images/banner2.jpg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.cardStyle{
+    width: 450px;
+    background-color: rgba(87, 87, 87, 0.336);
+    border-radius: 10px;
+    padding: 40px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
+
+
+.formError {
+  color: #ff0000ea;
+  font-size: 15px;
+}
+
+.formTitle{
+  font-weight: 600;
+  margin-top: 20px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.inputLabel {
+  font-size: 14px;
+  color: #ffffff;
+  margin-bottom: 6px;
+  margin-top: 24px;
+}
+
+.inputDiv {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+input {
+  height: 40px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: none;
+  border: solid 1px #ccc;
+  padding: 0 11px;
+}
+
+input:disabled {
+  cursor: not-allowed;
+  border: solid 1px #eee;
+}
+
+.buttonWrapper {
+  margin-top: 40px;
+}
+
+.submitButton {
+  width: 70%;
+  height: 40px;
+  margin: auto;
+  display: block;
+  color: #fff;
+  background: rgb(22,130,57);
+  background: linear-gradient(286deg, rgba(22,130,57,1) 14%, rgba(5,98,67,1) 100%);
+  border: none;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.035);
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submitButton:disabled,button[disabled] {
+  border: 1px solid #cccccc;
+  background-color: #cccccc;
+  color: #666666;
+}

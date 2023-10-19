@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Agdasima&family=Poppins&display=swap');
+
+
+.navbar{
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: rgb(28,148,145);
+    background: linear-gradient(90deg, rgb(23, 221, 214) 14%, rgb(54, 199, 172) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    /* background-repeat: no-repeat;
+    background-size: cover;
+    backdrop-filter: blur(10px); */
+}
+
+.nav_container{
+    /* width: 450px; */
+    /* background-color: rgba(87, 87, 87, 0.336); */
+    border-radius: 10px;
+    /* padding: 40px; */
+    backdrop-filter: blur(10px);
+    /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); */
+    /* color: #fff; */
+    /* min-height: 100vh; */
+}
+
+/* #sidebarCollapse a{
+    color: #fff;
+}
+
+.sidebarCollapse ul li a:hover{
+    color: #000;
+} */
+
+/* .top_card{
+    background: rgb(244,246,170);
+background: linear-gradient(90deg, rgba(244,246,170,1) 0%, rgba(245,232,80,1) 100%);
+} */
+
+.card-header{
+    background: rgb(193,251,241);
+    background: linear-gradient(90deg, rgba(193,251,241,1) 0%, rgba(126,246,225,1) 100%);
+}
+
+.table{
+    border-color: blueviolet !important;
+}
+
+.table td{
+    font-size: 16px !important;
+}
+
+.tabular_card{
+    /* background: rgb(28,148,145);
+    background: linear-gradient(90deg, rgb(23, 221, 214) 14%, rgb(54, 199, 172) 100%); */
+
+    background: rgb(193,251,241);
+    background: radial-gradient(circle, rgba(193,251,241,1) 0%, rgba(255,255,255,1) 50%, rgba(126,246,225,1) 100%);
+
+    /* background: rgb(193,251,241);
+    background: radial-gradient(circle, rgba(193,251,241,1) 0%, rgba(255,255,255,1) 50%, rgba(193,251,241,1) 100%); */
+}
+
+.tabular_card td img{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
