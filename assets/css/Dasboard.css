@@ -1,3 +1,10 @@
+
+@import url(https://unpkg.com/@webpixels/css@1.1.5/dist/index.css);
+
+/* Bootstrap Icons */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css");
+
+
 @import url('https://fonts.googleapis.com/css2?family=Agdasima&family=Poppins&display=swap');
 
 
@@ -6,7 +13,7 @@
     margin: 0;
     padding: 0;
     background: rgb(28,148,145);
-    background: linear-gradient(90deg, rgb(23, 221, 214) 14%, rgb(54, 199, 172) 100%);
+    background: linear-gradient(90deg, #17ddd6 14%, rgb(54, 199, 172) 100%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,28 +24,24 @@
 }
 
 .nav_container{
-    /* width: 450px; */
-    /* background-color: rgba(87, 87, 87, 0.336); */
     border-radius: 10px;
-    /* padding: 40px; */
     backdrop-filter: blur(10px);
-    /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); */
-    /* color: #fff; */
-    /* min-height: 100vh; */
 }
 
-/* #sidebarCollapse a{
-    color: #fff;
+.top_card{
+    background-image: url(../images/bg11.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* border: none; */
+    /* border-bottom: 2px solid #000; */
 }
 
-.sidebarCollapse ul li a:hover{
-    color: #000;
-} */
-
-/* .top_card{
-    background: rgb(244,246,170);
-background: linear-gradient(90deg, rgba(244,246,170,1) 0%, rgba(245,232,80,1) 100%);
-} */
+.top_card .card-body{
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    border: none;
+    border-bottom: 2px solid #039691;
+}
 
 .card-header{
     background: rgb(193,251,241);
@@ -46,26 +49,96 @@ background: linear-gradient(90deg, rgba(244,246,170,1) 0%, rgba(245,232,80,1) 10
 }
 
 .table{
-    border-color: blueviolet !important;
+    border-color: rgb(180, 180, 180) !important;
+}
+
+.table th{
+    font-size: 12px !important;
 }
 
 .table td{
-    font-size: 16px !important;
+    font-size: 14px !important;
 }
 
 .tabular_card{
-    /* background: rgb(28,148,145);
-    background: linear-gradient(90deg, rgb(23, 221, 214) 14%, rgb(54, 199, 172) 100%); */
-
     background: rgb(193,251,241);
     background: radial-gradient(circle, rgba(193,251,241,1) 0%, rgba(255,255,255,1) 50%, rgba(126,246,225,1) 100%);
-
-    /* background: rgb(193,251,241);
-    background: radial-gradient(circle, rgba(193,251,241,1) 0%, rgba(255,255,255,1) 50%, rgba(193,251,241,1) 100%); */
 }
 
 .tabular_card td img{
     width: 50px;
     height: 50px;
     object-fit: cover;
+}
+
+.editBtn{
+    margin-right: 10px;
+}
+
+/* For Toggle switch design */
+.switch input { 
+    display:none;
+}
+.switch {
+    display:inline-block;
+    width:50px;
+    height:20px;
+    margin:8px;
+    transform:translateY(50%);
+    position:relative;
+}
+/* Style Wired */
+.slider {
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    border-radius:30px;
+    box-shadow:0 0 0 2px #777, 0 0 4px #777;
+    cursor:pointer;
+    border:4px solid transparent;
+    overflow:hidden;
+     transition:.4s;
+}
+.slider:before {
+    position:absolute;
+    content:"";
+    width:100%;
+    height:100%;
+    background:#777;
+    border-radius:30px;
+    transform:translateX(-30px);
+    transition:.4s;
+}
+
+input:checked + .slider:before {
+    transform:translateX(30px);
+    background:limeGreen;
+}
+input:checked + .slider {
+    box-shadow:0 0 0 2px limeGreen,0 0 2px limeGreen;
+}
+
+/* Style Flat */
+.switch.flat .slider {
+ box-shadow:none;
+}
+.switch.flat .slider:before {
+  background:#FFF;
+}
+.switch.flat input:checked + .slider:before {
+ background:white;
+}
+.switch.flat input:checked + .slider {
+  background:limeGreen;
+}
+/* Toggle Switch design ends here */
+
+/* Select Box designing */
+.selectBox{
+    background-color: #777;
+    height: 40px;
+    width: 120px;
+    border-radius: 6px;
 }
