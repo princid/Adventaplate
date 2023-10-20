@@ -30,8 +30,8 @@ if($_SESSION['id']){
 
         <!-- Email -->
         <div class="form_elements">
-            <label for="email">*E-mail :</label><br />
-            <input type="email" name="email" id="email" placeholder="Enter your E-mail" class="input" />
+            <label for="text">*E-mail :</label><br />
+            <input type="text" name="email" id="email" placeholder="Enter your E-mail" class="input" />
             <div class="formError email"></div>
         </div>
 
