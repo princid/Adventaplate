@@ -388,7 +388,6 @@ $fetch_name_run = mysqli_query($conn, $fetch_name);
                                         </td>
 
                                         <td>
-
                                             <span class="badge badge-lg badge-dot">
                                                 <i class="bg-success"></i>Active
                                             </span>
@@ -428,7 +427,7 @@ $fetch_name_run = mysqli_query($conn, $fetch_name);
                                                     <input type="submit" name="update_user_role" class="btn btn-sm btn-primary" value="Update">
 
                                                 </form>
-                                                
+
                                             <?php } ?>
 
                                         </td>
