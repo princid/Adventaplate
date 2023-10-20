@@ -36,6 +36,7 @@ if(!empty($_SESSION)){
         // Fetching User's info from the database
         $username = $user['user_name'];
         $email = $user['user_email'];
+        $role = $user['user_role'];
         $age = $user['user_age'];
         $phone = $user['user_phoneNum'];
         $dob = $user['user_dob'];
