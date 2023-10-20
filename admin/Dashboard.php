@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 
 include("../includes/header.php");
@@ -10,8 +10,13 @@ include("../config/constants.php");
 include("../config/connectDB.php");
 
 // Including User's data
-// include("../src/controller/userData.php");
-include("../src/controller/userDataForAdmin.php");
+
+$id = $_SESSION['id'];
+$fetch_name = "SELECT * FROM users_table ORDER BY user_role_status";
+$fetch_name_run = mysqli_query($conn, $fetch_name);
+
+
+// include("../src/controller/userDataForAdmin.php");
 
 ?>
 
@@ -27,25 +32,14 @@ include("../src/controller/userDataForAdmin.php");
 <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script> -->
 
 
-<style>
-@import url(https://unpkg.com/@webpixels/css@1.1.5/dist/index.css);
-
-/* Bootstrap Icons */
-@import url("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css");
-</style>
-
-
 
 <!-- Dashboard -->
 <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
     <!-- Vertical Navbar -->
-    <nav class="navbar show navbar-vertical h-lg-screen navbar-expand-lg px-0 py-3 navbar-light bg-white border-bottom border-bottom-lg-0 border-end-lg"
-        id="navbarVertical">
+    <nav class="navbar show navbar-vertical h-lg-screen navbar-expand-lg px-0 py-3 navbar-light bg-white border-bottom border-bottom-lg-0 border-end-lg" id="navbarVertical">
         <div class="container-fluid nav_container">
             <!-- Toggler -->
-            <button class="navbar-toggler ms-n2" type="button" data-bs-toggle="collapse"
-                data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false"
-                aria-label="Toggle navigation">
+            <button class="navbar-toggler ms-n2" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <!-- Brand -->
@@ -57,12 +51,9 @@ include("../src/controller/userDataForAdmin.php");
                 <!-- Dropdown -->
                 <div class="dropdown">
                     <!-- Toggle -->
-                    <a href="#" id="sidebarAvatar" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
+                    <a href="#" id="sidebarAvatar" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="avatar-parent-child">
-                            <img alt="Image Placeholder"
-                                src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80"
-                                class="avatar avatar- rounded-circle">
+                            <img alt="Image Placeholder" src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80" class="avatar avatar- rounded-circle">
                             <span class="avatar-child avatar-badge bg-success"></span>
                         </div>
                     </a>
@@ -93,8 +84,7 @@ include("../src/controller/userDataForAdmin.php");
                     <li class="nav-item">
                         <a class="nav-link" href="#">
                             <i class="bi bi-chat"></i> Messages
-                            <span
-                                class="badge bg-soft-primary text-primary rounded-pill d-inline-flex align-items-center ms-auto">6</span>
+                            <span class="badge bg-soft-primary text-primary rounded-pill d-inline-flex align-items-center ms-auto">6</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -115,19 +105,15 @@ include("../src/controller/userDataForAdmin.php");
                     <li>
                         <div class="nav-link text-xs font-semibold text-uppercase text-muted ls-wide" href="#">
                             Contacts
-                            <span
-                                class="badge bg-soft-primary text-primary rounded-pill d-inline-flex align-items-center ms-4">13</span>
+                            <span class="badge bg-soft-primary text-primary rounded-pill d-inline-flex align-items-center ms-4">13</span>
                         </div>
                     </li>
                     <li>
                         <a href="#" class="nav-link d-flex align-items-center">
                             <div class="me-4">
                                 <div class="position-relative d-inline-block text-white">
-                                    <img alt="Image Placeholder"
-                                        src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80"
-                                        class="avatar rounded-circle">
-                                    <span
-                                        class="position-absolute bottom-2 end-2 transform translate-x-1/2 translate-y-1/2 border-2 border-solid border-current w-3 h-3 bg-success rounded-circle"></span>
+                                    <img alt="Image Placeholder" src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80" class="avatar rounded-circle">
+                                    <span class="position-absolute bottom-2 end-2 transform translate-x-1/2 translate-y-1/2 border-2 border-solid border-current w-3 h-3 bg-success rounded-circle"></span>
                                 </div>
                             </div>
                             <div>
@@ -148,8 +134,7 @@ include("../src/controller/userDataForAdmin.php");
                             <div class="me-4">
                                 <div class="position-relative d-inline-block text-white">
                                     <span class="avatar bg-soft-warning text-warning rounded-circle">JW</span>
-                                    <span
-                                        class="position-absolute bottom-2 end-2 transform translate-x-1/2 translate-y-1/2 border-2 border-solid border-current w-3 h-3 bg-success rounded-circle"></span>
+                                    <span class="position-absolute bottom-2 end-2 transform translate-x-1/2 translate-y-1/2 border-2 border-solid border-current w-3 h-3 bg-success rounded-circle"></span>
                                 </div>
                             </div>
                             <div>
@@ -169,11 +154,8 @@ include("../src/controller/userDataForAdmin.php");
                         <a href="#" class="nav-link d-flex align-items-center">
                             <div class="me-4">
                                 <div class="position-relative d-inline-block text-white">
-                                    <img alt="..."
-                                        src="https://images.unsplash.com/photo-1610899922902-c471ae684eff?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80"
-                                        class="avatar rounded-circle">
-                                    <span
-                                        class="position-absolute bottom-2 end-2 transform translate-x-1/2 translate-y-1/2 border-2 border-solid border-current w-3 h-3 bg-danger rounded-circle"></span>
+                                    <img alt="..." src="https://images.unsplash.com/photo-1610899922902-c471ae684eff?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80" class="avatar rounded-circle">
+                                    <span class="position-absolute bottom-2 end-2 transform translate-x-1/2 translate-y-1/2 border-2 border-solid border-current w-3 h-3 bg-danger rounded-circle"></span>
                                 </div>
                             </div>
                             <div>
@@ -223,8 +205,7 @@ include("../src/controller/userDataForAdmin.php");
                         <!-- Actions -->
                         <div class="col-sm-6 col-12 text-sm-end">
                             <div class="mx-n1">
-                                <a href="../components/HomePage.php"
-                                    class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
+                                <a href="../components/HomePage.php" class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
                                     <span class=" pe-2">
                                         <i class="bi bi-house"></i>
                                     </span>
@@ -267,9 +248,9 @@ include("../src/controller/userDataForAdmin.php");
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <span class="h6 font-semibold text-muted text-sm d-block mb-2">Total
+                                        <span class="h6 font-semibold text-dark text-md d-block mb-2">Total
                                             Users</span>
-                                        <span class="h3 font-bold mb-0">$750.90</span>
+                                        <span class="h3 font-bold mb-0">13</span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-tertiary text-white text-lg rounded-circle">
@@ -281,19 +262,19 @@ include("../src/controller/userDataForAdmin.php");
                                     <span class="badge badge-pill bg-soft-success text-success me-2">
                                         <i class="bi bi-arrow-up me-1"></i>13%
                                     </span>
-                                    <span class="text-nowrap text-xs text-muted">Since last month</span>
+                                    <span class="text-nowrap text-xs font-semibold text-muted">Since last month</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-3 col-sm-6 col-12">
-                        <div class="card shadow border-0">
+                        <div class="card shadow border-0 top_card">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <span class="h6 font-semibold text-muted text-sm d-block mb-2">Deleted
+                                        <span class="h6 font-semibold text-dark text-md d-block mb-2">Deleted
                                             Users</span>
-                                        <span class="h3 font-bold mb-0">215</span>
+                                        <span class="h3 font-bold mb-0">4</span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-primary text-white text-lg rounded-circle">
@@ -305,19 +286,19 @@ include("../src/controller/userDataForAdmin.php");
                                     <span class="badge badge-pill bg-soft-success text-success me-2">
                                         <i class="bi bi-arrow-up me-1"></i>30%
                                     </span>
-                                    <span class="text-nowrap text-xs text-muted">Since last month</span>
+                                    <span class="text-nowrap text-xs font-semibold text-muted">Since last month</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-3 col-sm-6 col-12">
-                        <div class="card shadow border-0">
+                        <div class="card shadow border-0 top_card">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <span class="h6 font-semibold text-muted text-sm d-block mb-2">Active
+                                        <span class="h6 font-semibold text-dark text-md d-block mb-2">Active
                                             Users</span>
-                                        <span class="h3 font-bold mb-0">1.400</span>
+                                        <span class="h3 font-bold mb-0">09</span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-info text-white text-lg rounded-circle">
@@ -329,19 +310,19 @@ include("../src/controller/userDataForAdmin.php");
                                     <span class="badge badge-pill bg-soft-danger text-danger me-2">
                                         <i class="bi bi-arrow-down me-1"></i>-5%
                                     </span>
-                                    <span class="text-nowrap text-xs text-muted">Since last month</span>
+                                    <span class="text-nowrap text-xs font-semibold text-muted">Since last month</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-3 col-sm-6 col-12">
-                        <div class="card shadow border-0">
+                        <div class="card shadow border-0 top_card">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <span class="h6 font-semibold text-muted text-sm d-block mb-2">Inactive
+                                        <span class="h6 font-semibold text-dark text-md d-block mb-2">Inactive
                                             Users</span>
-                                        <span class="h3 font-bold mb-0">95%</span>
+                                        <span class="h3 font-bold mb-0">00</span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-warning text-white text-lg rounded-circle">
@@ -353,7 +334,7 @@ include("../src/controller/userDataForAdmin.php");
                                     <span class="badge badge-pill bg-soft-success text-success me-2">
                                         <i class="bi bi-arrow-up me-1"></i>10%
                                     </span>
-                                    <span class="text-nowrap text-xs text-muted">Since last month</span>
+                                    <span class="text-nowrap text-xs font-semibold text-muted">Since last month</span>
                                 </div>
                             </div>
                         </div>
@@ -371,68 +352,100 @@ include("../src/controller/userDataForAdmin.php");
                                 <tr>
                                     <th scope="col">Name</th>
                                     <th scope="col">Email</th>
-                                    <th scope="col">Date</th>
+                                    <th scope="col">Account Creation Date</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Change Status</th>
-                                    <th scope="col">Assign Role</th>
+                                    <th class="text-center" scope="col">Assign Role</th>
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody class="tabular_card">
                                 <?php
-                                forEach($fetch_name_run as $user_data){ ?>
+                                foreach ($fetch_name_run as $user_data) { ?>
 
-                                <!-- var_dump($fetch_name_run); -->
+                                    <tr>
+                                        <td>
+                                            <?php if (!empty($user_data['user_profile_image'])) { ?>
+                                                <img src="<?php echo BASE_URL ?>assets/uploading/<?php echo $user_data['id'] . "/" . $user_data['user_profile_image']; ?>" alt="" class="avatar avatar-sm rounded-circle me-2">
 
-                                <tr>
-                                    <td>
-                                        <?php if(!empty($user_data['user_profile_image'])) { ?>
-                                        <img src="<?php echo BASE_URL ?>assets/uploading/<?php echo $user_data['id']. "/". $user_data['user_profile_image']; ?>"
-                                            alt="" class="avatar avatar-sm rounded-circle me-2">
+                                            <?php } else { ?>
+                                                <img src="<?php echo BASE_URL ?>assets/uploading/userDummy.png" class="avatar avatar-sm rounded-circle me-2">
+                                            <?php } ?>
 
-                                        <?php } else { ?>
-                                        <img src="<?php echo BASE_URL ?>assets/uploading/userDummy.png"
-                                            class="avatar avatar-sm rounded-circle me-2">
-                                        <?php } ?>
+                                            <a class="text-heading font-semibold" href="#">
+                                                <?php echo ($user_data['user_name']); ?>
+                                            </a>
+                                        </td>
 
-                                        <a class="text-heading font-semibold" href="#">
-                                            <?php echo($user_data['user_name']); ?>
-                                        </a>
-                                    </td>
+                                        <td>
+                                            <?php echo ($user_data['user_email']); ?>
+                                        </td>
 
-                                    <td>
-                                        <?php echo($user_data['user_email']); ?>
-                                    </td>
-
-                                    <td>
-                                        <!-- <img alt="..." src="https://preview.webpixels.io/web/img/other/logos/logo-1.png"
+                                        <td>
+                                            <!-- <img alt="..." src="https://preview.webpixels.io/web/img/other/logos/logo-1.png"
                                             class="avatar avatar-xs rounded-circle me-2"> -->
-                                        <?php echo($user_data['created_at']); ?>
-                                    </td>
+                                            <?php echo ($user_data['created_at']); ?>
+                                        </td>
 
-                                    <td>
-                                        <span class="badge badge-lg badge-dot">
-                                            <i class="bg-success"></i>Active
-                                        </span>
-                                    </td>
+                                        <td>
 
-                                    <td>
-                                        $3.500
-                                    </td>
+                                            <span class="badge badge-lg badge-dot">
+                                                <i class="bg-success"></i>Active
+                                            </span>
+                                        </td>
 
-                                    <td>
-                                        $3.500
-                                    </td>
+                                        <td>
+                                            <div>
+                                                <label class="switch">
+                                                    <input type="checkbox">
+                                                    <span class="slider"></span>
+                                                </label>
+                                            </div>
+                                        </td>
 
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-sm btn-neutral">View</a>
-                                        <button type="button"
-                                            class="btn btn-sm btn-square btn-neutral text-danger-hover">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
+                                        <td>
 
-                                </tr>
+                                            <?php if ($user_data['user_role_status'] == 1) { ?>
+                                                <select disabled="disabled" class="btn btn-sm btn-secondary">
+                                                    <option value="">Super Admin</option>
+                                                    <option value="" disabled="disabled">Super Admin (disabled)</option>
+                                                    <option value="">User</option>
+                                                </select>
+                                                <a href="#" class="btn btn-sm btn-primary disabled">Update</a>
+
+                                            <?php } else { ?>
+
+                                                <form action="../src/controller/userDataForAdmin.php" method="post">
+                                                    <select name="role" class="btn btn-sm btn-info">
+
+                                                        <option <?php if ($user_data['user_role_status'] == 3) { ?> selected <?php } ?> value="3">User</option>
+                                                        <option <?php if ($user_data['user_role_status'] == 2) { ?> selected <?php } ?> value="2">Admin</option>
+                                                        <option value="1" disabled="disabled">Super Admin (disabled)</option>
+                                                    </select>
+
+                                                    <input type="hidden" name="user_data_id" value="<?php echo $user_data['id']; ?>">
+
+                                                    <input type="submit" name="update_user_role" class="btn btn-sm btn-primary" value="Update">
+
+                                                </form>
+                                                
+                                            <?php } ?>
+
+                                        </td>
+
+                                        <td class="text-end">
+
+                                            <button type="button" class="btn btn-sm btn-square btn-success editBtn">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+
+                                            <button type="button" class="btn btn-sm btn-square btn-danger delBtn">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+
+                                        </td>
+
+                                    </tr>
 
                                 <?php } ?>
 
@@ -442,7 +455,8 @@ include("../src/controller/userDataForAdmin.php");
                                             src="https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80"
                                             class="avatar avatar-sm rounded-circle me-2">
                                         <a class="text-heading font-semibold" href="#">
-                                            <?php echo "$username"; ?>
+                                            <?php //echo "$username"; 
+                                            ?>
                                         </a>
                                     </td>
                                     <td>
