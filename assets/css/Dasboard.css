@@ -8,6 +8,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Agdasima&family=Poppins&display=swap');
 
 
+.brand_logo{
+    background: -webkit-linear-gradient(0deg, #2276a3 0%, #ff00c8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 .navbar{
     font-family: 'Poppins', sans-serif;
     margin: 0;
@@ -26,6 +32,10 @@
 .nav_container{
     border-radius: 10px;
     backdrop-filter: blur(10px);
+}
+
+.avatar{
+    object-fit: cover;
 }
 
 .top_card{
@@ -53,7 +63,7 @@
 }
 
 .table th{
-    font-size: 12px !important;
+    font-size: 14px !important;
 }
 
 .table td{
@@ -73,6 +83,10 @@
 
 .editBtn{
     margin-right: 10px;
+}
+
+.address_text{
+    color: #555555ec;
 }
 
 /* For Toggle switch design */
@@ -136,9 +150,145 @@ input:checked + .slider {
 /* Toggle Switch design ends here */
 
 /* Select Box designing */
-.selectBox{
-    background-color: #777;
-    height: 40px;
-    width: 120px;
-    border-radius: 6px;
+.selectBtn{
+    background-color: #17a2b8;
+    border: none;
+    color: #fff;
+    width: 65%;
+    margin-right: 10px;
+}
+
+.selectBtn:hover{
+    background-color: #108496;
+    border: none;
+    color: #fff;
+}
+
+.modal{
+    width: fit-content !important;
+    height: fit-content !important;
+}
+
+.modal p{
+    margin-bottom: 30px;
+}
+
+.modal a:hover{
+    /* text-decoration: none !important; */
+    color: #fff;
+}
+
+.closeBtn{
+    background-color: #616161;
+    border: none;
+    font-size: 16px;
+    padding: 10px 30px;
+    float: left;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
+    text-decoration: none;
+    color: #ffffff;
+    border-bottom: 2px solid #fff;
+}
+
+.delAnchor{
+    background-color: #D70040;
+    border: none;
+    font-size: 16px;
+    padding: 10px 30px;
+    float: right;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
+    text-decoration: none;
+    color: #ffffff;
+    border-bottom: 2px solid #fff;
+}
+
+
+
+/* jQuery Table Styling */
+
+/* Customizing the DataTable's header background and font */
+#table_id th {
+    background-color: #337ab7;
+    color: #fff;
+    font-weight: bold;
+}
+
+#table_id tr {
+    background-color: #f9f9f900;
+}
+
+/* Styling the selected rows */
+#table_id tr.selected {
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+
+/* Styling the pagination controls */
+.dataTables_paginate {
+    background-color: #f9f9f9;
+}
+
+/* Customizing the search input field */
+
+#table_id_filter input {
+    border: 1px solid #ccc;
+    padding: 5px 15px;
+    margin: 20px 0 20px 20px;
+    border-radius: 20px;
+}
+
+/* Customizing the search label */
+#table_id_filter label {
+    font-weight: bold;
+}
+
+/* Show entries of jQuery Table */
+/* Customizing the appearance of the length of the menu container */
+.dataTables_length {
+    margin: 20px 20px 20px 0;
+}
+
+/* Styling the "Show X entries" label */
+.dataTables_length label {
+    font-weight: bold;  
+}
+
+/* Styling the select (dropdown) element */
+.dataTables_length select {
+    width: auto; 
+    padding: 4px; 
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    
+}
+
+/* Styling the "entries" text */
+.dataTables_length select:after {
+    content: " entries";
+}
+
+/* Styling the "Show X entries" label when it's selected */
+.dataTables_length select option:checked {
+    background-color: #007BFF;
+    color: white; 
+}
+
+/* Styling the dropdown arrow icon */
+.dataTables_length select::after {
+    content: "▼";
+    margin-left: 5px;
+}
+
+/* Style the pagination */
+.dataTables_wrapper .dataTables_paginate {
+    text-align: center; /* Center the pagination */
+    margin-top: 20px; /* Add margin from the top */
+}
+
+.dataTables_info {
+    margin-top: 20px; /* Add margin from the top */
 }
