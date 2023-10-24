@@ -15,7 +15,7 @@ include("../src/controller/userData.php");
             <a href="<?php echo BASE_URL ?>components/HomePage.php" class="nav-link">Home</a>
 
             <?php
-            if ($_SESSION['id']) {
+            if ($_SESSION['id'] && $role == 1) {
 
             ?>
 
@@ -25,11 +25,20 @@ include("../src/controller/userData.php");
 
                 <a href="<?php echo BASE_URL ?>components/ContactPage.php" class="nav-link">Contact Us</a>
 
-            <?php
-            }
-            ?>
+                <a href="<?php echo BASE_URL ?>components/TnCPage.php" class="nav-link">T&C</a>
 
-            <a href="<?php echo BASE_URL ?>components/TnCPage.php" class="nav-link">T&C</a>
+            <?php
+            } elseif (isset($_SESSION['id']) && ($role == 2 || $role == 3)) {
+            ?>
+                <a href="<?php echo BASE_URL ?>components/GalleryPage.php" class="nav-link">My Gallery</a>
+
+                <a href="<?php echo BASE_URL ?>components/ContactPage.php" class="nav-link">Contact Us</a>
+
+                <a href="<?php echo BASE_URL ?>components/TnCPage.php" class="nav-link">T&C</a>
+                
+            <?php } else { ?>
+                <a href="<?php echo BASE_URL ?>components/TnCPage.php" class="nav-link">T&C</a>
+            <?php } ?>
         </div>
 
         <div class="logBtn">
@@ -41,8 +50,8 @@ include("../src/controller/userData.php");
                 <div class="profile-wrapper">
                     <a href="#" onclick="openProfileModal()">
                         <?php if (!empty($new_image)) { ?>
-                            <img src="<?php echo BASE_URL ?>assets/uploading/<?php echo $id. "/". $new_image; ?>" alt="" class="profilePic">
-                            
+                            <img src="<?php echo BASE_URL ?>assets/uploading/<?php echo $id . "/" . $new_image; ?>" alt="" class="profilePic">
+
                         <?php } else { ?>
                             <img src="<?php echo BASE_URL ?>assets/uploading/userDummy.png" class="profilePic">
                         <?php } ?>
