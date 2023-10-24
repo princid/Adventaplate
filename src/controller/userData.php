@@ -2,7 +2,7 @@
 
 
 if(!empty($_SESSION)){
-    $id = $_SESSION['id'];
+    $id = empty($_GET['id']) ? $_SESSION['id'] : $_GET['id'];
 
     // var_dump($id);
     
@@ -36,7 +36,7 @@ if(!empty($_SESSION)){
         // Fetching User's info from the database
         $username = $user['user_name'];
         $email = $user['user_email'];
-        $role = $user['user_role'];
+        $role = $user['user_role_status'];
         $age = $user['user_age'];
         $phone = $user['user_phoneNum'];
         $dob = $user['user_dob'];
