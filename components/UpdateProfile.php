@@ -2,7 +2,7 @@
 
 session_start();
 
-$id = $_SESSION['id'];
+$id = empty($_GET['id']) ? $_SESSION['id'] : $_GET['id'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // echo "jhgh";
