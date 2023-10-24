@@ -14,7 +14,7 @@ echo "hjsgf";
 <!-- Banner Section Starts -->
 <div class="banner">
     <div class="banner__text">
-        <h1>Hello! I'm <?php if($_SESSION) { ?> <?php echo $username;?> <?php } else { ?> <?php echo "Dummy User" ?> <?php } ?>, Where Can I Camp?</h1>
+        <h1>Hello! <?php if($_SESSION) { ?> <?php echo $username;?> <?php } else { ?> <?php echo "Dummy User" ?> <?php } ?>, Wanna Camp?</h1>
         <p>
             Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
             nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
