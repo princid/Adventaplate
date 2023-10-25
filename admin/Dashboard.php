@@ -16,6 +16,31 @@ $id = $_SESSION['id'];
 $fetch_name = "SELECT * FROM users_table WHERE user_role_status != 1 ORDER BY user_role_status";
 $fetch_name_run = mysqli_query($conn, $fetch_name);
 
+$total_users = mysqli_num_rows($fetch_name_run);
+
+
+$fetch_active_users = "SELECT active_status FROM users_table WHERE active_status = 1 AND user_role_status != 1 ";
+$fetch_active_users_run = mysqli_query($conn, $fetch_active_users);
+
+$active_users = mysqli_num_rows($fetch_active_users_run);
+
+
+$fetch_inactive_users = "SELECT active_status FROM users_table WHERE active_status = 0 AND user_role_status != 1 ";
+$fetch_inactive_users_run = mysqli_query($conn, $fetch_inactive_users);
+
+$inactive_users = mysqli_num_rows($fetch_inactive_users_run);
+
+// $active_users = mysqli_num_rows($fetchAllUsers['active_status' == 1]);
+
+
+// if($fetchAllUsers['active_status'] == 1){
+//     $active_users = mysqli_num_rows($fetch_name_run);
+//     var_dump($active_users);
+// }
+// var_dump($active_users);
+
+
+
 $fetch_address = "SELECT * FROM users_address WHERE 1";
 $fetch_address_run = mysqli_query($conn, $fetch_address);
 // var_dump(mysqli_fetch_assoc($fetch_address_run));
@@ -57,11 +82,11 @@ if ($role != 1) {
                 <span class="navbar-toggler-icon"></span>
             </button>
             <!-- Brand -->
-            <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" href="#">
+            <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" href="../components/HomePage.php">
                 <!-- <img src="https://preview.webpixels.io/web/img/logos/clever-primary.svg" alt="..."> -->
 
                 <!-- Title -->
-                <h2 class="h2 mb-0 ls-tight brand_logo">Adventaplate</h2>
+                <h2 class="h2 mb-0 ls-tight brand_logo">Adventaplate <span class="trademark">&reg;</span> </h2>
 
             </a>
             <!-- Divider -->
@@ -200,7 +225,7 @@ if ($role != 1) {
                     <hr class="navbar-divider my-2 opacity-2">
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="">
                             <i class="bi bi-box-arrow-left"></i> Logout
                         </a>
                     </li>
@@ -268,7 +293,7 @@ if ($role != 1) {
                                     <div class="col">
                                         <span class="h6 font-semibold text-dark text-md d-block mb-2">Total
                                             Users</span>
-                                        <span class="h3 font-bold mb-0">13</span>
+                                        <span class="h3 font-bold mb-0">0<?php echo $total_users; ?></span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-tertiary text-white text-lg rounded-circle">
@@ -292,7 +317,7 @@ if ($role != 1) {
                                     <div class="col">
                                         <span class="h6 font-semibold text-dark text-md d-block mb-2">Deleted
                                             Users</span>
-                                        <span class="h3 font-bold mb-0">4</span>
+                                        <span class="h3 font-bold mb-0">00</span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-primary text-white text-lg rounded-circle">
@@ -316,7 +341,7 @@ if ($role != 1) {
                                     <div class="col">
                                         <span class="h6 font-semibold text-dark text-md d-block mb-2">Active
                                             Users</span>
-                                        <span class="h3 font-bold mb-0">08</span>
+                                        <span class="h3 font-bold mb-0">0<?php echo $active_users; ?></span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-info text-white text-lg rounded-circle">
@@ -340,7 +365,7 @@ if ($role != 1) {
                                     <div class="col">
                                         <span class="h6 font-semibold text-dark text-md d-block mb-2">Inactive
                                             Users</span>
-                                        <span class="h3 font-bold mb-0">01</span>
+                                        <span class="h3 font-bold mb-0">0<?php echo $inactive_users; ?></span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-warning text-white text-lg rounded-circle">
@@ -360,9 +385,20 @@ if ($role != 1) {
                 </div>
 
                 <!-- User's Editable Data -->
-                <div class="card shadow border-0 mb-7">
-                    <!-- <div class="card-header"> -->
-                    <h3 class="h3 mb-0 ls-tight">User's List</h3>
+                <div class="card shadow border-0 mb-7 userListDiv">
+                    <div class="headerCard">
+                        <!-- <div class="card-header"> -->
+                            <h3 class="h3 mb-0 ls-tight">User's List</h3>
+                        <!-- </div> -->
+                        <div class="">
+                            <label for="#userStatusFilter " class="fs-5 primary-text fw-bold me-2">Status Filter :</label>
+                            <select id="userStatusFilter" class="fs-6 p-1 fw-bold">
+                                <option value="all">All</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
                     <!-- </div> -->
                     <div class="table-responsive">
                         <table id="table_id" class="table table-hover table-nowrap display">
@@ -404,20 +440,58 @@ if ($role != 1) {
                                             <?php echo ($user_data['created_at']); ?>
                                         </td>
 
-                                        <td>
+                                        <!-- <td>
                                             <span class="badge badge-lg badge-dot">
-                                                <?php if ($user_data['active_status'] == 1) { ?><i class="bg-success"></i>Active <?php } else { ?><i class="bg-danger"></i>Inactive <?php } ?>
+                                                <?php //if ($user_data['active_status'] == 1) { 
+                                                ?><i class="bg-success"></i>Active <?php // } else { 
+                                                                                    ?><i class="bg-danger"></i>Inactive <?php // } 
+                                                                                                                        ?>
+                                            </span>
+                                        </td> -->
+
+                                        <!-- <td>
+                                            <form action="../src/controller/activeStatus.php" method="post"></form>
+                                            <div class="toggle_div">
+                                                <label class="switch">
+                                                    <input type="checkbox" class="status-toggle" data-user-id="<?php //echo $user_data['id']; 
+                                                                                                                ?>" <?php //echo $user_data['active_status'] == 1 ? 'checked' : ''; 
+                                                                                                                    ?>>
+                                                    <span class="slider"></span>
+                                                </label>
+
+                                                
+                                                <input type="submit" name="change_status" class="btn btn-sm btn-primary" value="Save">
+                                                
+                                            </div>
+                                            </form>
+                                        </td> -->
+
+                                        <!-- <button title="Save status" type="submit" class="btn btn-sm btn-success statusBtn">
+                                            <i class="bi bi-cloud-download-fill"></i>
+                                        </button> -->
+
+                                        <td>
+                                            <span class="badge badge-lg badge-dot" id="status-badge-<?php echo $user_data['id']; ?>">
+                                                <?php if ($user_data['active_status'] == 1) { ?>
+                                                    <i class="bg-success"></i>Active
+                                                <?php } else { ?>
+                                                    <i class="bg-danger"></i>Inactive
+                                                <?php } ?>
                                             </span>
                                         </td>
 
                                         <td>
-                                            <div>
-                                                <label class="switch">
-                                                    <input type="checkbox">
-                                                    <span class="slider"></span>
-                                                </label>
+                                            <div class="change_status_div">
+                                                <div class="toggle_div">
+                                                    <label class="switch">
+                                                        <input type="checkbox" class="status-toggle" data-user-id="<?php echo $user_data['id']; ?>" <?php echo $user_data['active_status'] == 1 ? 'checked' : ''; ?>>
+                                                        <span class="slider"></span>
+                                                    </label>
+                                                </div>
+                                                <button title="Save status" class="btn btn-sm btn-success save-status-btn statusBtn" data-user-id="<?php echo $user_data['id']; ?>"><i class="bi bi-check-circle-fill"></i></button>
                                             </div>
                                         </td>
+
 
                                         <td>
 
@@ -497,6 +571,8 @@ if ($role != 1) {
 
                                 <?php } ?>
 
+
+
                             </tbody>
                         </table>
                     </div>
@@ -526,26 +602,104 @@ if ($role != 1) {
 <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 <script>
     $(document).ready(function() {
-        $('#table_id').DataTable({
-            "paging": true, // Enable pagination
-            "pageLength": 5, // Set the number of records to display per page
-            "order": [5, 'asc'], // Set the default sorting column and order (1st column in ascending order)
-            "pagingType": "simple_numbers", // You can use "simple" or "simple_numbers" for different pagination styles
+        const table = $('#table_id').DataTable({
+            "paging": true,
+            "pageLength": 5,
+            "order": [5, 'asc'],
+            "pagingType": "simple_numbers",
             "language": {
                 "paginate": {
-                    "next": "&gt;", // Next page button text
-                    "previous": "&lt;" // Previous page button text
+                    "next": "&gt;",
+                    "previous": "&lt;"
                 },
-
                 "lengthMenu": "Show <select>" +
                     "<option value='5'>5</option>" +
                     "<option value='10'>10</option>" +
                     "<option value='25'>25</option>" +
                     "<option value='-1'>All</option>" +
                     "</select> entries",
-                "searchPlaceholder": "Search..." // Add the placeholder for the search input
+                "searchPlaceholder": "Search..."
             }
-
         });
+
+        // Initial load of the DataTable with all data
+        table.columns(3).search('').draw();
+
+        // Add change event handler to the dropdown
+        $('#userStatusFilter').on('change', function() {
+            var status = $(this).val();
+
+            if (status === 'all') {
+                // Show all rows
+                table.columns(3).search('').draw();
+            } else if (status === 'active') {
+                // Filter rows based on active status
+                table.columns(3).search('Active').draw();
+            } else if (status === 'inactive') {
+                // Filter rows based on inactive status
+                table.columns(3).search('Inactive').draw();
+            }
+        });
+
+        // // Attach an event listener to the toggle switches
+        // $('#table_id').on('change', '.status-toggle', function() {
+        //     const userId = $(this).data('user-id');
+        //     const isActive = this.checked ? 1 : 0;
+
+        //     // Make an AJAX request to update the user's status in the database
+        //     $.ajax({
+        //         url: '../src/controller/activeStatus.php',
+        //         method: 'POST',
+        //         data: {
+        //             userId: userId,
+        //             isActive: isActive
+        //         },
+        //         success: function(response) {
+        //             // Handle the response if needed
+
+        //             // Update the status in the table cell
+        //             const cell = table.cell($(this).closest('td'));
+        //             const badge = isActive ? '<i class="bg-success"></i>Active' : '<i class="bg-danger"></i>Inactive';
+        //             cell.data(badge).draw();
+        //         },
+        //         error: function(xhr, status, error) {
+        //             // Handle any errors
+        //         }
+        //     });
+        // });
+
+
+
+
+        // Attach an event listener to the Save buttons
+        $('.save-status-btn').on('click', function() {
+            const userId = $(this).data('user-id');
+            const isActive = $(this).prev('.toggle_div').find('.status-toggle').prop('checked') ? 1 : 0;
+            const statusBadge = $('#status-badge-' + userId);
+
+            // Make an AJAX request to update the user's status in the database
+            $.ajax({
+                url: '../src/controller/activeStatus.php',
+                method: 'POST',
+                data: {
+                    userId: userId,
+                    isActive: isActive
+                },
+                success: function(response) {
+                    // Handle the response if needed
+
+                    // Update the status badge
+                    if (isActive === 1) {
+                        statusBadge.html('<i class="bg-success"></i>Active');
+                    } else {
+                        statusBadge.html('<i class="bg-danger"></i>Inactive');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Handle any errors
+                }
+            });
+        });
+
     });
 </script>
