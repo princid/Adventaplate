@@ -14,6 +14,10 @@
     -webkit-text-fill-color: transparent;
 }
 
+.trademark{
+    font-weight: lighter;
+}
+
 .navbar{
     font-family: 'Poppins', sans-serif;
     margin: 0;
@@ -52,6 +56,10 @@
     border: none;
     border-bottom: 2px solid #039691;
 }
+.headerCard{
+    display: flex;
+    justify-content: space-between;
+}
 
 .card-header{
     background: rgb(193,251,241);
@@ -83,10 +91,50 @@
 
 .editBtn{
     margin-right: 10px;
+    background-color: #007BFF;
+    border: none;
+    box-shadow: 0 10px 25px rgba(49, 49, 49, 0.6);
+}
+
+.delBtn{
+    border: none;
+    box-shadow: 0 10px 25px rgba(49, 49, 49, 0.6);
 }
 
 .address_text{
     color: #555555ec;
+}
+
+.change_status_div{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
+}
+
+.toggle_div{
+    display: flex;
+}
+
+.statusBtn{
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    font-size: 20px;
+    text-align: center;
+    padding: 0;
+    background-color: #078d3f;
+    border: none;
+}
+
+.bi-pencil-square{
+    /* background-color: #007BFF; */
+    color: #fff;
+    font-size: large;
+}
+
+.bi-trash-fill{
+    font-size: large;
 }
 
 /* For Toggle switch design */
@@ -98,7 +146,6 @@
     width:50px;
     height:20px;
     margin:8px;
-    transform:translateY(50%);
     position:relative;
 }
 /* Style Wired */
