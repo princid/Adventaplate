@@ -1,25 +1,29 @@
-<!-- <?php 
-// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//     $user_id = $_POST['user_id'];
-//     $new_status = $_POST['new_status'];
+<?php
+session_start();
 
-//     // Include your database connection
-//     include('../../config/connectDB.php');
+require('../../config/connectDB.php');
 
-//     // Update the user's status in the database (use prepared statements to prevent SQL injection)
-//     $stmt = $conn->prepare("UPDATE users_table SET active_status = ? WHERE id = ?");
-//     $stmt->bind_param('si', $new_status, $user_id);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-//     if ($stmt->execute()) {
-//         echo 'success';
-//     } else {
-//         echo 'error';
-//     }
+    // Get the user ID and status from the POST data
+    $userId = $_POST['userId'];
+    $isActive = $_POST['isActive'];
 
-//     $stmt->close();
-//     $conn->close();
-// } else {
-//     // Invalid request method
-//     http_response_code(405);
-//     echo 'Method Not Allowed';
-// } 
+    // Prepare and execute an SQL query to update the user's status
+    $updateQuery = "UPDATE users_table SET active_status = ? WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $updateQuery);
+    mysqli_stmt_bind_param($stmt, 'ii', $isActive, $userId);
+
+    if (mysqli_stmt_execute($stmt)) {
+        echo 'User status updated successfully';
+    } else {
+        echo 'Failed to update user status';
+    }
+
+    mysqli_stmt_close($stmt);
+    mysqli_close($conn);
+} else {
+    http_response_code(405); // Method Not Allowed
+}
+
+?>
