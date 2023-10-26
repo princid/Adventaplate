@@ -5,7 +5,7 @@
 // include("../includes/header.php");
 // require("../config/constants.php");
 include("Navbar.php");
-echo "hjsgf";
+// echo "hjsgf";
 
 ?>
 <link rel="stylesheet" href="<?php echo BASE_URL.'assets/css/index.css'; ?>" />
