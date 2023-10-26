@@ -32,6 +32,13 @@ $fetch_inactive_users_run = mysqli_query($conn, $fetch_inactive_users);
 
 $inactive_users = mysqli_num_rows($fetch_inactive_users_run);
 
+
+
+$fetch_deleted_users = "SELECT is_deleted FROM users_table WHERE is_deleted = 1 AND user_role_status != 1 ";
+$fetch_deleted_users_run = mysqli_query($conn, $fetch_deleted_users);
+
+$deleted_users = mysqli_num_rows($fetch_deleted_users_run);
+
 // $active_users = mysqli_num_rows($fetchAllUsers['active_status' == 1]);
 
 
@@ -173,47 +180,47 @@ if ($role != 1) {
                         </div>
                     </li>
 
-                    <?php foreach ($fetch_active_users_run as $active_user_data) 
-                        { if($active_user_data['is_deleted'] == 0) { ?>
+                    <?php foreach ($fetch_active_users_run as $active_user_data) {
+                        if ($active_user_data['is_deleted'] == 0) { ?>
 
-                        <li>
-                            <a href="#" class="nav-link d-flex align-items-center">
-                                <div class="me-4">
-                                    <div class="position-relative d-inline-block text-white">
-                                        <?php if (!empty($active_user_data['user_profile_image'])) { ?>
-                                            <img src="<?php echo BASE_URL ?>assets/uploading/<?php echo $active_user_data['id'] . "/" . $active_user_data['user_profile_image']; ?>" alt="" class="avatar rounded-circle">
+                            <li>
+                                <a href="#" class="nav-link d-flex align-items-center">
+                                    <div class="me-4">
+                                        <div class="position-relative d-inline-block text-white">
+                                            <?php if (!empty($active_user_data['user_profile_image'])) { ?>
+                                                <img src="<?php echo BASE_URL ?>assets/uploading/<?php echo $active_user_data['id'] . "/" . $active_user_data['user_profile_image']; ?>" alt="" class="avatar rounded-circle">
 
-                                        <?php } else { ?>
-                                            <img src="<?php echo BASE_URL ?>assets/uploading/userDummy.png" class="avatar rounded-circle">
+                                            <?php } else { ?>
+                                                <img src="<?php echo BASE_URL ?>assets/uploading/userDummy.png" class="avatar rounded-circle">
+                                            <?php } ?>
+
+                                            <!-- <img alt="Image Placeholder" src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80" class="avatar rounded-circle"> -->
+
+                                            <span class="position-absolute bottom-2 end-2 transform translate-x-1/2 translate-y-1/2 border-2 border-solid border-current w-3 h-3 bg-success rounded-circle"></span>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <span class="d-block text-sm font-bold">
+                                            <?php echo ($active_user_data['user_name']); ?>
+                                        </span>
+
+                                        <?php foreach ($fetch_address_run as $user_address) { ?>
+                                            <span class="d-block text-xs font-regular address_text ">
+                                                <?php if ($active_user_data['id'] == $user_address['user_id']) {
+                                                    echo $user_address['user_city'] . ' - ' . $user_address['user_state'] . ' - ' .  $user_address['user_country']; ?>
+                                                <?php } ?>
+                                            </span>
                                         <?php } ?>
 
-                                        <!-- <img alt="Image Placeholder" src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80" class="avatar rounded-circle"> -->
-
-                                        <span class="position-absolute bottom-2 end-2 transform translate-x-1/2 translate-y-1/2 border-2 border-solid border-current w-3 h-3 bg-success rounded-circle"></span>
                                     </div>
-                                </div>
-
-                                <div>
-                                    <span class="d-block text-sm font-bold">
-                                        <?php echo ($active_user_data['user_name']); ?>
-                                    </span>
-
-                                    <?php foreach ($fetch_address_run as $user_address) { ?>
-                                        <span class="d-block text-xs font-regular address_text ">
-                                            <?php if ($active_user_data['id'] == $user_address['user_id']) {
-                                                echo $user_address['user_city'] . ' - ' . $user_address['user_state'] . ' - ' .  $user_address['user_country']; ?>
-                                            <?php } ?>
-                                        </span>
-                                    <?php } ?>
-
-                                </div>
-                                <!-- <div class="ms-auto">
+                                    <!-- <div class="ms-auto">
                                     <i class="bi bi-chat"></i>
                                 </div> -->
-                            </a>
-                        </li>
+                                </a>
+                            </li>
 
-                        <?php }?>
+                        <?php } ?>
 
                     <?php } ?>
 
@@ -332,7 +339,11 @@ if ($role != 1) {
                                     <div class="col">
                                         <span class="h6 font-semibold text-dark text-md d-block mb-2">Deleted
                                             Users</span>
-                                        <span class="h3 font-bold mb-0">00</span>
+                                        <span class="h3 font-bold mb-0"><?php if ($deleted_users < 10) {
+                                                                            echo '0' . $deleted_users;
+                                                                        } else {
+                                                                            echo $deleted_users;
+                                                                        } ?></span></span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-primary text-white text-lg rounded-circle">
@@ -453,7 +464,7 @@ if ($role != 1) {
                                                 <?php } ?>
 
                                                 <a title="Account Deleted" class="text-danger font-semibold" href="#">
-                                                    <?php echo strtoupper($user_data['user_name']. " (Deleted)"); ?>
+                                                    <?php echo strtoupper($user_data['user_name'] . " (Deleted)"); ?>
                                                 </a>
                                             </td>
 
@@ -898,7 +909,7 @@ if ($role != 1) {
 
         // For deleting the user's account
 
-        
+
 
 
 
