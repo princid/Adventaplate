@@ -9,6 +9,8 @@ include("../config/constants.php");
 // Including the Databse Connection
 include("../config/connectDB.php");
 
+// include("../src/controller/activeStatus.php");
+
 include("../src/controller/userData.php");
 
 // Including User's data
@@ -19,7 +21,7 @@ $fetch_name_run = mysqli_query($conn, $fetch_name);
 $total_users = mysqli_num_rows($fetch_name_run);
 
 
-$fetch_active_users = "SELECT active_status FROM users_table WHERE active_status = 1 AND user_role_status != 1 ";
+$fetch_active_users = "SELECT * FROM users_table WHERE active_status = 1 AND user_role_status != 1 ORDER BY user_role_status ";
 $fetch_active_users_run = mysqli_query($conn, $fetch_active_users);
 
 $active_users = mysqli_num_rows($fetch_active_users_run);
@@ -162,18 +164,24 @@ if ($role != 1) {
                 <ul class="navbar-nav mb-md-4">
                     <li>
                         <div class="nav-link text-xs font-semibold text-uppercase text-muted ls-wide" href="#">
-                            Clients
-                            <span class="badge bg-soft-primary text-primary rounded-pill d-inline-flex align-items-center ms-4">13</span>
+                            Active Clients
+                            <span class="badge bg-soft-primary text-primary rounded-pill d-inline-flex align-items-center ms-4"><?php if ($total_users < 10) {
+                                                                                                                                    echo '0' . $total_users;
+                                                                                                                                } else {
+                                                                                                                                    echo $total_users;
+                                                                                                                                } ?></span>
                         </div>
                     </li>
 
-                    <?php foreach ($fetch_name_run as $user_data) { ?>
+                    <?php foreach ($fetch_active_users_run as $active_user_data) 
+                        { if($active_user_data['is_deleted'] == 0) { ?>
+
                         <li>
                             <a href="#" class="nav-link d-flex align-items-center">
                                 <div class="me-4">
                                     <div class="position-relative d-inline-block text-white">
-                                        <?php if (!empty($user_data['user_profile_image'])) { ?>
-                                            <img src="<?php echo BASE_URL ?>assets/uploading/<?php echo $user_data['id'] . "/" . $user_data['user_profile_image']; ?>" alt="" class="avatar rounded-circle">
+                                        <?php if (!empty($active_user_data['user_profile_image'])) { ?>
+                                            <img src="<?php echo BASE_URL ?>assets/uploading/<?php echo $active_user_data['id'] . "/" . $active_user_data['user_profile_image']; ?>" alt="" class="avatar rounded-circle">
 
                                         <?php } else { ?>
                                             <img src="<?php echo BASE_URL ?>assets/uploading/userDummy.png" class="avatar rounded-circle">
@@ -187,12 +195,12 @@ if ($role != 1) {
 
                                 <div>
                                     <span class="d-block text-sm font-bold">
-                                        <?php echo ($user_data['user_name']); ?>
+                                        <?php echo ($active_user_data['user_name']); ?>
                                     </span>
 
                                     <?php foreach ($fetch_address_run as $user_address) { ?>
                                         <span class="d-block text-xs font-regular address_text ">
-                                            <?php if ($user_data['id'] == $user_address['user_id']) {
+                                            <?php if ($active_user_data['id'] == $user_address['user_id']) {
                                                 echo $user_address['user_city'] . ' - ' . $user_address['user_state'] . ' - ' .  $user_address['user_country']; ?>
                                             <?php } ?>
                                         </span>
@@ -204,6 +212,9 @@ if ($role != 1) {
                                 </div> -->
                             </a>
                         </li>
+
+                        <?php }?>
+
                     <?php } ?>
 
                 </ul>
@@ -293,7 +304,11 @@ if ($role != 1) {
                                     <div class="col">
                                         <span class="h6 font-semibold text-dark text-md d-block mb-2">Total
                                             Users</span>
-                                        <span class="h3 font-bold mb-0">0<?php echo $total_users; ?></span>
+                                        <span class="h3 font-bold mb-0"><?php if ($total_users < 10) {
+                                                                            echo '0' . $total_users;
+                                                                        } else {
+                                                                            echo $total_users;
+                                                                        } ?></span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-tertiary text-white text-lg rounded-circle">
@@ -341,7 +356,11 @@ if ($role != 1) {
                                     <div class="col">
                                         <span class="h6 font-semibold text-dark text-md d-block mb-2">Active
                                             Users</span>
-                                        <span class="h3 font-bold mb-0">0<?php echo $active_users; ?></span>
+                                        <span class="h3 font-bold mb-0"><?php if ($active_users < 10) {
+                                                                            echo '0' . $active_users;
+                                                                        } else {
+                                                                            echo $active_users;
+                                                                        } ?></span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-info text-white text-lg rounded-circle">
@@ -365,7 +384,11 @@ if ($role != 1) {
                                     <div class="col">
                                         <span class="h6 font-semibold text-dark text-md d-block mb-2">Inactive
                                             Users</span>
-                                        <span class="h3 font-bold mb-0">0<?php echo $inactive_users; ?></span>
+                                        <span class="h3 font-bold mb-0"><?php if ($inactive_users < 10) {
+                                                                            echo '0' . $inactive_users;
+                                                                        } else {
+                                                                            echo $inactive_users;
+                                                                        } ?></span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-warning text-white text-lg rounded-circle">
@@ -384,11 +407,13 @@ if ($role != 1) {
                     </div>
                 </div>
 
+                <div id="alertBox"></div>
+
                 <!-- User's Editable Data -->
                 <div class="card shadow border-0 mb-7 userListDiv">
                     <div class="headerCard">
                         <!-- <div class="card-header"> -->
-                            <h3 class="h3 mb-0 ls-tight">User's List</h3>
+                        <h3 class="h3 mb-0 ls-tight">User's List</h3>
                         <!-- </div> -->
                         <div class="">
                             <label for="#userStatusFilter " class="fs-5 primary-text fw-bold me-2">Status Filter :</label>
@@ -408,166 +433,277 @@ if ($role != 1) {
                                     <th scope="col">Email</th>
                                     <th scope="col">Account Creation Date</th>
                                     <th scope="col">Status</th>
-                                    <th scope="col">Change Status</th>
+                                    <th class="text-center" scope="col">Change Status</th>
                                     <th class="text-center" scope="col">Assign Role</th>
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody class="tabular_card">
                                 <?php
-                                foreach ($fetch_name_run as $user_data) { ?>
+                                foreach ($fetch_name_run as $user_data) {
+                                    if ($user_data['is_deleted'] == 1) { ?>
 
-                                    <tr>
-                                        <td>
-                                            <?php if (!empty($user_data['user_profile_image'])) { ?>
-                                                <img title="<?php echo $user_data['user_name'] ?>" src="<?php echo BASE_URL ?>assets/uploading/<?php echo $user_data['id'] . "/" . $user_data['user_profile_image']; ?>" alt="" class="avatar avatar-sm rounded-circle me-2">
+                                        <tr data-user-id="<?php echo $user_data['id']; ?>">
+                                            <td>
+                                                <?php if (!empty($user_data['user_profile_image'])) { ?>
+                                                    <img title="<?php echo $user_data['user_name'] ?>" src="<?php echo BASE_URL ?>assets/uploading/<?php echo $user_data['id'] . "/" . $user_data['user_profile_image']; ?>" alt="" class="avatar avatar-sm rounded-circle me-2">
 
-                                            <?php } else { ?>
-                                                <img title="<?php echo $user_data['user_name'] ?>" src="<?php echo BASE_URL ?>assets/uploading/userDummy.png" class="avatar avatar-sm rounded-circle me-2">
-                                            <?php } ?>
-
-                                            <a class="text-heading font-semibold" href="#">
-                                                <?php echo strtoupper($user_data['user_name']); ?>
-                                            </a>
-                                        </td>
-
-                                        <td>
-                                            <?php echo ($user_data['user_email']); ?>
-                                        </td>
-
-                                        <td>
-                                            <!-- <img alt="..." src="https://preview.webpixels.io/web/img/other/logos/logo-1.png" class="avatar avatar-xs rounded-circle me-2"> -->
-                                            <?php echo ($user_data['created_at']); ?>
-                                        </td>
-
-                                        <!-- <td>
-                                            <span class="badge badge-lg badge-dot">
-                                                <?php //if ($user_data['active_status'] == 1) { 
-                                                ?><i class="bg-success"></i>Active <?php // } else { 
-                                                                                    ?><i class="bg-danger"></i>Inactive <?php // } 
-                                                                                                                        ?>
-                                            </span>
-                                        </td> -->
-
-                                        <!-- <td>
-                                            <form action="../src/controller/activeStatus.php" method="post"></form>
-                                            <div class="toggle_div">
-                                                <label class="switch">
-                                                    <input type="checkbox" class="status-toggle" data-user-id="<?php //echo $user_data['id']; 
-                                                                                                                ?>" <?php //echo $user_data['active_status'] == 1 ? 'checked' : ''; 
-                                                                                                                    ?>>
-                                                    <span class="slider"></span>
-                                                </label>
-
-                                                
-                                                <input type="submit" name="change_status" class="btn btn-sm btn-primary" value="Save">
-                                                
-                                            </div>
-                                            </form>
-                                        </td> -->
-
-                                        <!-- <button title="Save status" type="submit" class="btn btn-sm btn-success statusBtn">
-                                            <i class="bi bi-cloud-download-fill"></i>
-                                        </button> -->
-
-                                        <td>
-                                            <span class="badge badge-lg badge-dot" id="status-badge-<?php echo $user_data['id']; ?>">
-                                                <?php if ($user_data['active_status'] == 1) { ?>
-                                                    <i class="bg-success"></i>Active
                                                 <?php } else { ?>
-                                                    <i class="bg-danger"></i>Inactive
+                                                    <img title="<?php echo $user_data['user_name'] ?>" src="<?php echo BASE_URL ?>assets/uploading/userDummy.png" class="avatar avatar-sm rounded-circle me-2">
                                                 <?php } ?>
-                                            </span>
-                                        </td>
 
-                                        <td>
-                                            <div class="change_status_div">
-                                                <div class="toggle_div">
-                                                    <label class="switch">
-                                                        <input type="checkbox" class="status-toggle" data-user-id="<?php echo $user_data['id']; ?>" <?php echo $user_data['active_status'] == 1 ? 'checked' : ''; ?>>
-                                                        <span class="slider"></span>
-                                                    </label>
+                                                <a title="Account Deleted" class="text-danger font-semibold" href="#">
+                                                    <?php echo strtoupper($user_data['user_name']. " (Deleted)"); ?>
+                                                </a>
+                                            </td>
+
+                                            <td>
+                                                <div class="text-danger">
+                                                    <?php echo ($user_data['user_email']); ?>
                                                 </div>
-                                                <button title="Save status" class="btn btn-sm btn-success save-status-btn statusBtn" data-user-id="<?php echo $user_data['id']; ?>"><i class="bi bi-check-circle-fill"></i></button>
-                                            </div>
-                                        </td>
+                                            </td>
+
+                                            <td>
+                                                <!-- <img alt="..." src="https://preview.webpixels.io/web/img/other/logos/logo-1.png" class="avatar avatar-xs rounded-circle me-2"> -->
+
+                                                <div class="text-danger">
+                                                    <?php echo ($user_data['created_at']); ?>
+                                                </div>
+                                            </td>
 
 
-                                        <td>
 
-                                            <?php if ($user_data['user_role_status'] == 1) { ?>
-                                                <select disabled="disabled" class="btn btn-sm selectBtn">
-                                                    <option value="">SUPER ADMIN</option>
-                                                    <!-- <option value="" disabled="disabled">Super Admin (disabled)</option> -->
-                                                    <!-- <option value="">User</option> -->
-                                                </select>
-                                                <a href="#" class="btn btn-sm btn-primary disabled">Update</a>
+                                            <td>
+                                                <span class="badge badge-lg badge-dot" id="status-badge-<?php echo $user_data['id']; ?>">
+                                                    <?php if ($user_data['active_status'] == 1) { ?>
+                                                        <i class="bg-success"></i>Active
+                                                    <?php } else { ?>
+                                                        <i class="bg-danger"></i>Inactive
+                                                    <?php } ?>
+                                                </span>
+                                            </td>
 
-                                                <!-- <button type="button" class="btn btn-sm btn-square btn-danger delBtn">
+                                            <td>
+                                                <div class="change_status_div">
+                                                    <div class="toggle_div">
+                                                        <label class="switch">
+                                                            <input disabled="disabled" type="checkbox" class="status-toggle" data-user-id="<?php echo $user_data['id']; ?>" <?php echo $user_data['active_status'] == 1 ? 'checked' : ''; ?>>
+                                                            <span class="slider"></span>
+                                                        </label>
+                                                    </div>
+                                                    <button disabled="disabled" title="Save status" class="btn btn-sm btn-success save-status-btn statusBtn" data-user-id="<?php echo $user_data['id']; ?>"><i class="bi bi-check-circle-fill"></i></button>
+                                                </div>
+                                            </td>
+
+
+                                            <td>
+
+                                                <?php if ($user_data['user_role_status'] == 1) { ?>
+                                                    <select disabled="disabled" class="btn btn-sm selectBtn">
+                                                        <option value="">SUPER ADMIN</option>
+                                                        <!-- <option value="" disabled="disabled">Super Admin (disabled)</option> -->
+                                                        <!-- <option value="">User</option> -->
+                                                    </select>
+                                                    <a href="#" class="btn btn-sm btn-primary disabled">Update</a>
+
+                                                    <!-- <button type="button" class="btn btn-sm btn-square btn-danger delBtn">
                                                     <i class="bi bi-upload"></i>
                                                 </button> -->
 
-                                            <?php } else { ?>
+                                                <?php } else { ?>
 
-                                                <form action="../src/controller/userDataForAdmin.php" method="post">
-                                                    <select name="role" class="btn btn-sm selectBtn">
+                                                    <form action="../src/controller/userDataForAdmin.php" method="post">
+                                                        <select disabled="disabled" name="role" class="btn btn-sm selectBtn">
 
-                                                        <option <?php if ($user_data['user_role_status'] == 3) { ?> selected <?php } ?> value="3">USER</option>
-                                                        <option <?php if ($user_data['user_role_status'] == 2) { ?> selected <?php } ?> value="2">ADMIN</option>
-                                                        <!-- <option value="1" disabled="disabled"></option> -->
-                                                    </select>
+                                                            <option <?php if ($user_data['user_role_status'] == 3) { ?> selected <?php } ?> value="3">USER</option>
+                                                            <option <?php if ($user_data['user_role_status'] == 2) { ?> selected <?php } ?> value="2">ADMIN</option>
+                                                            <!-- <option value="1" disabled="disabled"></option> -->
+                                                        </select>
 
-                                                    <input type="hidden" name="user_data_id" value="<?php echo $user_data['id']; ?>">
+                                                        <input type="hidden" name="user_data_id" value="<?php echo $user_data['id']; ?>">
 
-                                                    <input type="submit" name="update_user_role" class="btn btn-sm btn-primary" value="Update">
+                                                        <!-- <input type="submit" name="update_user_role" class="btn btn-sm btn-primary update-role-btn" value="Update"> -->
 
-                                                    <!-- <button type="button" class="btn btn-sm btn-square btn-primary delBtn">
-                                                        <i class="bi bi-arrow-repeat"></i>
-                                                    </button> -->
 
-                                                </form>
+                                                        <button disabled="disabled" name="update_user_role" type="button" class="btn btn-sm btn-square btn-primary update-role-btn">
+                                                            <i class="bi bi-arrow-repeat"></i>
+                                                        </button>
+                                                    </form>
 
-                                            <?php } ?>
+                                                <?php } ?>
 
-                                        </td>
+                                            </td>
 
-                                        <td class="text-end">
+                                            <td class="text-end">
 
-                                            <?php if ($user_data['user_role_status'] == 1) { ?>
+                                                <?php if ($user_data['user_role_status'] == 1) { ?>
 
-                                                <button type="button" disabled="disabled" class="btn btn-sm btn-square btn-success editBtn">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </button>
-
-                                                <button type="button" disabled="disabled" class="btn btn-sm btn-square btn-danger delBtn">
-                                                    <i class="bi bi-trash-fill"></i>
-                                                </button>
-                                            <?php } else { ?>
-
-                                                <a href=<?php echo "http://localhost/PHP_Assesments/Adventaplate/components/ProfileForm.php?id=" . $user_data['id']; ?>>
-                                                    <button title="Edit User" type="button" class="btn btn-sm btn-square btn-success editBtn">
+                                                    <button type="button" disabled="disabled" class="btn btn-sm btn-square btn-success editBtn">
                                                         <i class="bi bi-pencil-square"></i>
                                                     </button>
-                                                </a>
 
-                                                <a href="#delModal_<?php echo $user_data['id']; ?>" rel="modal:open">
-                                                    <button title="Delete User" type="button" class="btn btn-sm btn-square btn-danger delBtn">
+                                                    <button type="button" disabled="disabled" class="btn btn-sm btn-square btn-danger delBtn">
                                                         <i class="bi bi-trash-fill"></i>
                                                     </button>
+                                                <?php } else { ?>
+
+                                                    <a href=<?php echo "http://localhost/PHP_Assesments/Adventaplate/components/ProfileForm.php?id=" . $user_data['id']; ?>>
+                                                        <button title="Edit User" type="button" class="btn btn-sm btn-square btn-success editBtn">
+                                                            <i class="bi bi-pencil-square"></i>
+                                                        </button>
+                                                    </a>
+
+                                                    <a href="#activateModal_<?php echo $user_data['id']; ?>" rel="modal:open">
+                                                        <button title="Activate User" type="button" class="btn btn-sm btn-square btn-success activateBtn">
+                                                            <i class="bi bi-person-check"></i>
+                                                        </button>
+                                                    </a>
+
+                                                    <div id="activateModal_<?php echo $user_data['id']; ?>" class="modal">
+                                                        <p>Are you sure, you want to activate <?php echo $user_data['user_name']; ?> 's account?</p>
+                                                        <a class="closeBtn" href="#" rel="modal:close">Close</a>
+                                                        <a class="activateAnchor" href="#" rel="">Activate</a>
+                                                    </div>
+
+                                                <?php } ?>
+
+
+                                            </td>
+
+                                        </tr>
+
+                                    <?php } else { ?>
+
+                                        <tr data-user-id="<?php echo $user_data['id']; ?>">
+                                            <td>
+                                                <?php if (!empty($user_data['user_profile_image'])) { ?>
+                                                    <img title="<?php echo $user_data['user_name'] ?>" src="<?php echo BASE_URL ?>assets/uploading/<?php echo $user_data['id'] . "/" . $user_data['user_profile_image']; ?>" alt="" class="avatar avatar-sm rounded-circle me-2">
+
+                                                <?php } else { ?>
+                                                    <img title="<?php echo $user_data['user_name'] ?>" src="<?php echo BASE_URL ?>assets/uploading/userDummy.png" class="avatar avatar-sm rounded-circle me-2">
+                                                <?php } ?>
+
+                                                <a class="text-heading font-semibold" href="#">
+                                                    <?php echo strtoupper($user_data['user_name']); ?>
                                                 </a>
+                                            </td>
 
-                                                <div id="delModal_<?php echo $user_data['id']; ?>" class="modal">
-                                                    <p>Are you sure, you want to delete <?php echo $user_data['user_name']; ?> 's account?</p>
-                                                    <a class="closeBtn" href="#" rel="modal:close">Close</a>
-                                                    <a class="delAnchor" href="#" rel="">Delete</a>
+                                            <td>
+                                                <?php echo ($user_data['user_email']); ?>
+                                            </td>
+
+                                            <td>
+                                                <!-- <img alt="..." src="https://preview.webpixels.io/web/img/other/logos/logo-1.png" class="avatar avatar-xs rounded-circle me-2"> -->
+                                                <?php echo ($user_data['created_at']); ?>
+                                            </td>
+
+
+
+                                            <td>
+                                                <span class="badge badge-lg badge-dot" id="status-badge-<?php echo $user_data['id']; ?>">
+                                                    <?php if ($user_data['active_status'] == 1) { ?>
+                                                        <i class="bg-success"></i>Active
+                                                    <?php } else { ?>
+                                                        <i class="bg-danger"></i>Inactive
+                                                    <?php } ?>
+                                                </span>
+                                            </td>
+
+                                            <td>
+                                                <div class="change_status_div">
+                                                    <div class="toggle_div">
+                                                        <label class="switch">
+                                                            <input type="checkbox" class="status-toggle" data-user-id="<?php echo $user_data['id']; ?>" <?php echo $user_data['active_status'] == 1 ? 'checked' : ''; ?>>
+                                                            <span class="slider"></span>
+                                                        </label>
+                                                    </div>
+                                                    <button title="Save status" class="btn btn-sm btn-success save-status-btn statusBtn" data-user-id="<?php echo $user_data['id']; ?>"><i class="bi bi-check-circle-fill"></i></button>
                                                 </div>
+                                            </td>
 
-                                            <?php } ?>
+
+                                            <td>
+
+                                                <?php if ($user_data['user_role_status'] == 1) { ?>
+                                                    <select disabled="disabled" class="btn btn-sm selectBtn">
+                                                        <option value="">SUPER ADMIN</option>
+                                                        <!-- <option value="" disabled="disabled">Super Admin (disabled)</option> -->
+                                                        <!-- <option value="">User</option> -->
+                                                    </select>
+                                                    <a href="#" class="btn btn-sm btn-primary disabled">Update</a>
+
+                                                    <!-- <button type="button" class="btn btn-sm btn-square btn-danger delBtn">
+                                                    <i class="bi bi-upload"></i>
+                                                </button> -->
+
+                                                <?php } else { ?>
+
+                                                    <form action="../src/controller/userDataForAdmin.php" method="post">
+                                                        <select name="role" class="btn btn-sm selectBtn">
+
+                                                            <option <?php if ($user_data['user_role_status'] == 3) { ?> selected <?php } ?> value="3">USER</option>
+                                                            <option <?php if ($user_data['user_role_status'] == 2) { ?> selected <?php } ?> value="2">ADMIN</option>
+                                                            <!-- <option value="1" disabled="disabled"></option> -->
+                                                        </select>
+
+                                                        <input type="hidden" name="user_data_id" value="<?php echo $user_data['id']; ?>">
+
+                                                        <!-- <input type="submit" name="update_user_role" class="btn btn-sm btn-primary update-role-btn" value="Update"> -->
 
 
-                                        </td>
+                                                        <button name="update_user_role" type="button" class="btn btn-sm btn-square btn-primary update-role-btn">
+                                                            <i class="bi bi-arrow-repeat"></i>
+                                                        </button>
+                                                    </form>
 
-                                    </tr>
+                                                <?php } ?>
+
+                                            </td>
+
+                                            <td class="text-end">
+
+                                                <?php if ($user_data['user_role_status'] == 1) { ?>
+
+                                                    <button type="button" disabled="disabled" class="btn btn-sm btn-square btn-success editBtn">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </button>
+
+                                                    <button type="button" disabled="disabled" class="btn btn-sm btn-square btn-danger delBtn">
+                                                        <i class="bi bi-trash-fill"></i>
+                                                    </button>
+                                                <?php } else { ?>
+
+                                                    <a href=<?php echo "http://localhost/PHP_Assesments/Adventaplate/components/ProfileForm.php?id=" . $user_data['id']; ?>>
+                                                        <button title="Edit User" type="button" class="btn btn-sm btn-square btn-success editBtn">
+                                                            <i class="bi bi-pencil-square"></i>
+                                                        </button>
+                                                    </a>
+
+                                                    <a href="#delModal_<?php echo $user_data['id']; ?>" rel="modal:open">
+                                                        <button title="Delete User" type="button" class="btn btn-sm btn-square btn-danger delBtn">
+                                                            <i class="bi bi-trash-fill"></i>
+                                                        </button>
+                                                    </a>
+
+                                                    <div id="delModal_<?php echo $user_data['id']; ?>" class="modal">
+                                                        <p>Are you sure, you want to delete <?php echo $user_data['user_name']; ?> 's account?</p>
+                                                        <a class="closeBtn" href="#" rel="modal:close">Close</a>
+                                                        <a class="delAnchor" href="#" rel="">
+                                                            <input type="hidden" name="user_data_delete" value="<?php echo $user_data['id']; ?>">
+                                                            <button title="Delete User" type="button" class="btn btn-sm btn-square btn-danger delBtn delete_user_btn">
+                                                                <i class="bi bi-trash-fill"></i>
+                                                            </button>
+                                                        </a>
+                                                    </div>
+
+                                                <?php } ?>
+
+
+                                            </td>
+
+                                        </tr>
+
+                                    <?php } ?>
 
                                 <?php } ?>
 
@@ -622,6 +758,8 @@ if ($role != 1) {
             }
         });
 
+
+        // For Filtering the Data
         // Initial load of the DataTable with all data
         table.columns(3).search('').draw();
 
@@ -641,41 +779,19 @@ if ($role != 1) {
             }
         });
 
-        // // Attach an event listener to the toggle switches
-        // $('#table_id').on('change', '.status-toggle', function() {
-        //     const userId = $(this).data('user-id');
-        //     const isActive = this.checked ? 1 : 0;
-
-        //     // Make an AJAX request to update the user's status in the database
-        //     $.ajax({
-        //         url: '../src/controller/activeStatus.php',
-        //         method: 'POST',
-        //         data: {
-        //             userId: userId,
-        //             isActive: isActive
-        //         },
-        //         success: function(response) {
-        //             // Handle the response if needed
-
-        //             // Update the status in the table cell
-        //             const cell = table.cell($(this).closest('td'));
-        //             const badge = isActive ? '<i class="bg-success"></i>Active' : '<i class="bg-danger"></i>Inactive';
-        //             cell.data(badge).draw();
-        //         },
-        //         error: function(xhr, status, error) {
-        //             // Handle any errors
-        //         }
-        //     });
-        // });
-
-
-
-
         // Attach an event listener to the Save buttons
-        $('.save-status-btn').on('click', function() {
-            const userId = $(this).data('user-id');
-            const isActive = $(this).prev('.toggle_div').find('.status-toggle').prop('checked') ? 1 : 0;
+        // $('.save-status-btn').on('click', function() {
+        //     const userId = $(this).data('user-id');
+        //     const isActive = $(this).prev('.toggle_div').find('.status-toggle').prop('checked') ? 1 : 0;
+        //     const statusBadge = $('#status-badge-' + userId);
+
+        $('#table_id').on('click', '.save-status-btn', function() {
+            const userId = $(this).closest('tr').data('user-id');
+            const isActive = $(this).siblings('.toggle_div').find('.status-toggle').prop('checked') ? 1 : 0;
             const statusBadge = $('#status-badge-' + userId);
+
+            // const alertBox = $('#alertBox_' + userId);
+            const alertBox = $('#alertBox');
 
             // Make an AJAX request to update the user's status in the database
             $.ajax({
@@ -685,21 +801,106 @@ if ($role != 1) {
                     userId: userId,
                     isActive: isActive
                 },
-                success: function(response) {
-                    // Handle the response if needed
 
-                    // Update the status badge
-                    if (isActive === 1) {
-                        statusBadge.html('<i class="bg-success"></i>Active');
-                    } else {
-                        statusBadge.html('<i class="bg-danger"></i>Inactive');
+                success: function(response) {
+                    try {
+                        response = JSON.parse(response);
+                        if (response.activeStatus === 'success') {
+                            // Handle a successful status update
+                            if (response.isActive == 1) {
+                                statusBadge.html('<i class="bg-success"></i>Active');
+                                alertBox.html(`<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                            <strong>${response.message}</strong>
+                                            
+                                            </div>`);
+
+                                setTimeout(() => {
+                                    alertBox.html("<div></div>");
+                                }, 3000)
+                            } else {
+                                statusBadge.html('<i class="bg-danger"></i>Inactive');
+                                alertBox.html(`<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                            <strong>${response.message}</strong>
+                                            
+                                            </div>`);
+
+                                setTimeout(() => {
+                                    alertBox.html("<div></div>");
+                                }, 3000)
+                            }
+                            // You can also display the success message if needed
+                            console.log(response.message);
+                        } else {
+                            // Handle an error
+                            console.error(response.message);
+                        }
+                    } catch (error) {
+                        console.error("An error occurred:", error);
+                    }
+                }
+
+            });
+        });
+
+
+        $('#table_id').on('click', '.update-role-btn', function(e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            const form = $(this).closest('form');
+            const userId = form.find('input[name="user_data_id"]').val();
+            const newRole = form.find('select[name="role"]').val();
+
+            const alertBox = $('#alertBox');
+
+            // Make an AJAX request to update the user's role in the database
+            $.ajax({
+                url: '../src/controller/userDataForAdmin.php', // Replace with the actual URL to your PHP file
+                method: 'POST',
+                data: {
+                    update_user_role: 1, // Signal to the server that we want to update the user's role
+                    user_data_id: userId,
+                    role: newRole
+                },
+                success: function(roleResponse) {
+                    // Handle the response if needed
+                    try {
+                        roleResponse = JSON.parse(roleResponse);
+                        if (roleResponse.roleStatus === 'success') {
+                            // Handle a successful role update
+
+                            // alert('User\'s role updated successfully');
+                            alertBox.html(`<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                            <strong>${roleResponse.message}</strong>
+                                            
+                                            </div>`);
+
+                            setTimeout(() => {
+                                alertBox.html("<div></div>");
+                            }, 3000)
+                            // You can also update the role display on the page if needed
+                        } else {
+                            // Handle an error
+                            alert('Failed to update user role: ' + roleResponse.message);
+                        }
+                    } catch (error) {
+                        console.error("An error occurred:", error);
                     }
                 },
                 error: function(xhr, status, error) {
                     // Handle any errors
+                    console.error("AJAX error:", error);
                 }
             });
         });
+
+
+
+
+        // For deleting the user's account
+
+        
+
+
 
     });
 </script>
