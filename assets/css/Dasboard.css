@@ -89,6 +89,11 @@
     object-fit: cover;
 }
 
+.update-role-btn{
+    border: none;
+    box-shadow: 0 10px 25px rgba(49, 49, 49, 0.6);
+}
+
 .editBtn{
     margin-right: 10px;
     background-color: #007BFF;
@@ -127,6 +132,17 @@
     border: none;
 }
 
+.activateBtn{
+    background-color: #078d3f;
+    border: none;
+    box-shadow: 0 10px 25px rgba(49, 49, 49, 0.6);
+}
+
+.bi-arrow-repeat{
+    color: #fff;
+    font-size: large;
+}
+
 .bi-pencil-square{
     /* background-color: #007BFF; */
     color: #fff;
@@ -134,6 +150,10 @@
 }
 
 .bi-trash-fill{
+    font-size: large;
+}
+
+.bi-person-check{
     font-size: large;
 }
 
@@ -241,6 +261,21 @@ input:checked + .slider {
 
 .delAnchor{
     background-color: #D70040;
+    border: none;
+    font-size: 16px;
+    padding: 10px 30px;
+    float: right;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
+    text-decoration: none;
+    color: #ffffff;
+    border-bottom: 2px solid #fff;
+}
+
+
+.activateAnchor{
+    background-color: #18b803;
     border: none;
     font-size: 16px;
     padding: 10px 30px;
