@@ -11,6 +11,13 @@ include("../src/controller/userData.php");
 <link rel="stylesheet" href="../assets/css/Navbar.css">
 <header>
     <div class="nav">
+        <!-- <div class="brand_logo"> -->
+        <!-- <a href=""> -->
+            <h3 class="brand_logo">Adventaplate <span class="trademark">&reg;</span> </h3>
+        <!-- </a> -->
+
+        <!-- </div> -->
+
         <div class="anchorTags">
             <a href="<?php echo BASE_URL ?>components/HomePage.php" class="nav-link">Home</a>
 
@@ -27,6 +34,36 @@ include("../src/controller/userData.php");
 
                 <a href="<?php echo BASE_URL ?>components/TnCPage.php" class="nav-link">T&C</a>
 
+                <div class="logBtn">
+                    <?php
+                    if (!$_SESSION['id']) {
+                    ?>
+                        <button class="btn"><a href="<?php echo BASE_URL ?>components/SignIn.php">Sign In</a></button>
+                    <?php } else { ?>
+                        <div class="profile-wrapper">
+                            <a href="#" onclick="openProfileModal()">
+                                <?php if (!empty($new_image)) { ?>
+                                    <img src="<?php echo BASE_URL ?>assets/uploading/<?php echo $id . "/" . $new_image; ?>" alt="" class="profilePic">
+
+                                <?php } else { ?>
+                                    <img src="<?php echo BASE_URL ?>assets/uploading/userDummy.png" class="profilePic">
+                                <?php } ?>
+                            </a>
+                            <!-- The modal -->
+                            <div id="profileModal" class="modal">
+                                <div class="modal-content">
+                                    <!-- `&times;`, `&#x2716;`, etc. are HTML entities for the "×" -->
+                                    <span class="close" onclick="closeProfileModal()">&times;</span>
+                                    <div class="modal-options">
+                                        <a href="<?php echo BASE_URL ?>components/ProfilePage.php">Visit Profile</a>
+                                        <a href="<?php echo BASE_URL ?>components/SignOut.php">Log Out</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                </div>
+
             <?php
             } elseif (isset($_SESSION['id']) && ($role == 2 || $role == 3)) {
             ?>
@@ -35,41 +72,76 @@ include("../src/controller/userData.php");
                 <a href="<?php echo BASE_URL ?>components/ContactPage.php" class="nav-link">Contact Us</a>
 
                 <a href="<?php echo BASE_URL ?>components/TnCPage.php" class="nav-link">T&C</a>
-                
-            <?php } else { ?>
-                <a href="<?php echo BASE_URL ?>components/TnCPage.php" class="nav-link">T&C</a>
-            <?php } ?>
-        </div>
 
-        <div class="logBtn">
-            <?php
-            if (!$_SESSION['id']) {
-            ?>
-                <button class="btn"><a href="<?php echo BASE_URL ?>components/SignIn.php">Sign In</a></button>
-            <?php } else { ?>
-                <div class="profile-wrapper">
-                    <a href="#" onclick="openProfileModal()">
-                        <?php if (!empty($new_image)) { ?>
-                            <img src="<?php echo BASE_URL ?>assets/uploading/<?php echo $id . "/" . $new_image; ?>" alt="" class="profilePic">
+                <div class="logBtn">
+                    <?php
+                    if (!$_SESSION['id']) {
+                    ?>
+                        <button class="btn"><a href="<?php echo BASE_URL ?>components/SignIn.php">Sign In</a></button>
+                    <?php } else { ?>
+                        <div class="profile-wrapper">
+                            <a href="#" onclick="openProfileModal()">
+                                <?php if (!empty($new_image)) { ?>
+                                    <img src="<?php echo BASE_URL ?>assets/uploading/<?php echo $id . "/" . $new_image; ?>" alt="" class="profilePic">
 
-                        <?php } else { ?>
-                            <img src="<?php echo BASE_URL ?>assets/uploading/userDummy.png" class="profilePic">
-                        <?php } ?>
-                    </a>
-                    <!-- The modal -->
-                    <div id="profileModal" class="modal">
-                        <div class="modal-content">
-                            <!-- `&times;`, `&#x2716;`, etc. are HTML entities for the "×" -->
-                            <span class="close" onclick="closeProfileModal()">&times;</span>
-                            <div class="modal-options">
-                                <a href="<?php echo BASE_URL ?>components/ProfilePage.php">Visit Profile</a>
-                                <a href="<?php echo BASE_URL ?>components/SignOut.php">Log Out</a>
+                                <?php } else { ?>
+                                    <img src="<?php echo BASE_URL ?>assets/uploading/userDummy.png" class="profilePic">
+                                <?php } ?>
+                            </a>
+                            <!-- The modal -->
+                            <div id="profileModal" class="modal">
+                                <div class="modal-content">
+                                    <!-- `&times;`, `&#x2716;`, etc. are HTML entities for the "×" -->
+                                    <span class="close" onclick="closeProfileModal()">&times;</span>
+                                    <div class="modal-options">
+                                        <a href="<?php echo BASE_URL ?>components/ProfilePage.php">Visit Profile</a>
+                                        <a href="<?php echo BASE_URL ?>components/SignOut.php">Log Out</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    <?php } ?>
                 </div>
+
+
+
+            <?php } else { ?>
+                <a href="<?php echo BASE_URL ?>components/TnCPage.php" class="nav-link">T&C</a>
+
+                <div class="logBtn">
+                    <?php
+                    if (!$_SESSION['id']) {
+                    ?>
+                        <button class="btn"><a href="<?php echo BASE_URL ?>components/SignIn.php">Sign In</a></button>
+                    <?php } else { ?>
+                        <div class="profile-wrapper">
+                            <a href="#" onclick="openProfileModal()">
+                                <?php if (!empty($new_image)) { ?>
+                                    <img src="<?php echo BASE_URL ?>assets/uploading/<?php echo $id . "/" . $new_image; ?>" alt="" class="profilePic">
+
+                                <?php } else { ?>
+                                    <img src="<?php echo BASE_URL ?>assets/uploading/userDummy.png" class="profilePic">
+                                <?php } ?>
+                            </a>
+                            <!-- The modal -->
+                            <div id="profileModal" class="modal">
+                                <div class="modal-content">
+                                    <!-- `&times;`, `&#x2716;`, etc. are HTML entities for the "×" -->
+                                    <span class="close" onclick="closeProfileModal()">&times;</span>
+                                    <div class="modal-options">
+                                        <a href="<?php echo BASE_URL ?>components/ProfilePage.php">Visit Profile</a>
+                                        <a href="<?php echo BASE_URL ?>components/SignOut.php">Log Out</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                </div>
+
             <?php } ?>
         </div>
+
+
     </div>
 </header>
 
