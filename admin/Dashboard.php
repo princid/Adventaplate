@@ -214,28 +214,6 @@ if ($role != 1) {
 
                 </ul>
 
-                <!-- Divider -->
-                <!-- <hr class="navbar-divider my-2 opacity-2"> -->
-
-                <!-- Push content down -->
-                <!-- <div class="mt-auto"></div> -->
-                <!-- User (md) -->
-                <!-- <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="bi bi-person-circle"></i> Account
-                        </a>
-                    </li>
-
-
-                    <hr class="navbar-divider my-2 opacity-2">
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="">
-                            <i class="bi bi-box-arrow-left"></i> Logout
-                        </a>
-                    </li>
-                </ul> -->
             </div>
         </div>
     </nav>

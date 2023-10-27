@@ -36,6 +36,20 @@ if (empty($_SESSION['id'])) {
 
 
 <div class="profile__container">
+
+    <?php if (isset($_SESSION['message'])) { ?>
+        <div class="alertBox">
+            <div class="alert alert-success" role="alert">
+                <h1>
+                    <?php
+                    echo $_SESSION['message'];
+                    unset($_SESSION['message']);
+                    ?>
+                </h1>
+            </div>
+        </div>
+    <?php } ?>
+
     <!-- <form action="<?php #$_SERVER['PHP_SELF']; 
                         ?>" method="post" id="form" enctype="multipart/form-data"> -->
 
@@ -216,18 +230,15 @@ if (empty($_SESSION['id'])) {
     </div>
 </a>
 
-<script src="../assets/js/updateProfile.js"></script>
+<script>
+    const alertBox = document.querySelector(".alertBox");
+    // console.log(alertBox);
 
-<script type="text/javascript" src="">
-    // document.getElementById("new_image").onchange = function() {
-    //     document.getElementById("form").submit();
-    // }
+    // alertBox.innerHTML(``);
 
-    // document.getElementById("new_image").onchange = function(){
-    //     var imagePrev = URL.createObjectURL(event.target.files[0]);
-    //     var imageDiv = document.getElementById('uploadImage');
-    //     var newImg = document.createElement('img');
-    //     newImg.src = imagePrev;
-    //     imageDiv.appendChild(newImg);
-    // }
+    setTimeout(() => {
+        alertBox.innerHTML = "";
+    }, 3000);
 </script>
+
+<script src="../assets/js/updateProfile.js"></script>

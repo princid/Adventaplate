@@ -1,36 +1,28 @@
-<!-- <?php
+
+<?php 
+
+session_start();
+
+require('../../config/connectDB.php');
 
 
-// session_start();
+if(isset($_GET['id'])){
+    // echo "hfjhf";
+    $id = $_GET['id'];
+    $action = $_GET['action'];
+    $roleAction = $_GET['roleAction'];
 
-// require('../../config/connectDB.php');
+    $sql = "UPDATE users_table SET is_deleted = '$action', active_status = '$roleAction' WHERE id = '$id' ";
+    $sql_run = mysqli_query($conn, $sql);
 
-// if (isset($_POST["update_user_role"])) {
-//     // Get the user ID and status from the POST data
-//     $userId = $_POST['userId'];
-//     $isDeleted = $_POST['isDeleted'];
-
-//     // Prepare and execute an SQL query to update the user's status
-//     $updateQuery = "UPDATE users_table SET is_deleted = ? WHERE id = ?";
-//     $stmt = mysqli_prepare($conn, $updateQuery);
-//     mysqli_stmt_bind_param($stmt, 'ii', $isDeleted, $userId);
-
-//     if (mysqli_stmt_execute($stmt)) {
-//         // Status updated successfully
-//         $response = array('deleteStatus' => 'success', 'message' => 'User\'s account deleted successfully', 'isDeleted' => $isDeleted);
-//         echo json_encode($response);
-//     } else {
-//         // Failed to update user status
-//         $response = array('deleteStatus' => 'error', 'message' => 'Failed to delete user\'s account');
-//         echo json_encode($response);
-//     }
-
-//     mysqli_stmt_close($stmt);
-//     mysqli_close($conn);
-// } else {
-//     http_response_code(405); // Method Not Allowed
-// }
+    if($sql_run){
+        header("location: http://localhost/PHP_Assesments/Adventaplate/admin/Dashboard.php");
+    }
+    else{
+        echo "Failed to delete the user";
+    }
+}
 
 
 
-?> -->
+?>
