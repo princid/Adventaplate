@@ -11,60 +11,48 @@ include("../config/connectDB.php");
 
 // include("../src/controller/activeStatus.php");
 
+// Including User's data
 include("../src/controller/userData.php");
 
-// Including User's data
+
 $id = $_SESSION['id'];
-$fetch_name = "SELECT * FROM users_table WHERE user_role_status != 1 ORDER BY user_role_status";
+
+// Fetching all the data to count the total number of users
+$fetch_name = "SELECT * FROM users_table WHERE user_role_status != 1 ORDER BY user_role_status ";
 $fetch_name_run = mysqli_query($conn, $fetch_name);
 
 $total_users = mysqli_num_rows($fetch_name_run);
 
 
-$fetch_active_users = "SELECT * FROM users_table WHERE active_status = 1 AND user_role_status != 1 ORDER BY user_role_status ";
+// Fetching data to count total number of active users
+$fetch_active_users = "SELECT * FROM users_table WHERE active_status = 1 AND user_role_status != 1 AND is_deleted = 0 ORDER BY user_role_status ";
 $fetch_active_users_run = mysqli_query($conn, $fetch_active_users);
 
 $active_users = mysqli_num_rows($fetch_active_users_run);
 
 
+// Fetching the data to count total number of inactive users
 $fetch_inactive_users = "SELECT active_status FROM users_table WHERE active_status = 0 AND user_role_status != 1 ";
 $fetch_inactive_users_run = mysqli_query($conn, $fetch_inactive_users);
 
 $inactive_users = mysqli_num_rows($fetch_inactive_users_run);
 
 
-
+// Fetching the data to count total number of deleted users
 $fetch_deleted_users = "SELECT is_deleted FROM users_table WHERE is_deleted = 1 AND user_role_status != 1 ";
 $fetch_deleted_users_run = mysqli_query($conn, $fetch_deleted_users);
 
 $deleted_users = mysqli_num_rows($fetch_deleted_users_run);
 
-// $active_users = mysqli_num_rows($fetchAllUsers['active_status' == 1]);
-
-
-// if($fetchAllUsers['active_status'] == 1){
-//     $active_users = mysqli_num_rows($fetch_name_run);
-//     var_dump($active_users);
-// }
-// var_dump($active_users);
-
-
-
+// Fetching the address data from the users_address table.
 $fetch_address = "SELECT * FROM users_address WHERE 1";
 $fetch_address_run = mysqli_query($conn, $fetch_address);
-// var_dump(mysqli_fetch_assoc($fetch_address_run));
 
+// Protecting the page to be accessed by the Super Admin only.
 if ($role != 1) {
     header("location: ../components/HomePage.php");
     exit();
 }
-
-// if (empty($_SESSION['id'])) {
-//     header("location: ./SignIn.php");
-//     exit();
-// }
-
-// include("../src/controller/userDataForAdmin.php");
 
 ?>
 
@@ -172,10 +160,10 @@ if ($role != 1) {
                     <li>
                         <div class="nav-link text-xs font-semibold text-uppercase text-muted ls-wide" href="#">
                             Active Clients
-                            <span class="badge bg-soft-primary text-primary rounded-pill d-inline-flex align-items-center ms-4"><?php if ($total_users < 10) {
-                                                                                                                                    echo '0' . $total_users;
+                            <span class="badge bg-soft-primary text-primary rounded-pill d-inline-flex align-items-center ms-4"><?php if ($active_users < 10) {
+                                                                                                                                    echo '0' . $active_users;
                                                                                                                                 } else {
-                                                                                                                                    echo $total_users;
+                                                                                                                                    echo $active_users;
                                                                                                                                 } ?></span>
                         </div>
                     </li>
@@ -227,19 +215,19 @@ if ($role != 1) {
                 </ul>
 
                 <!-- Divider -->
-                <hr class="navbar-divider my-2 opacity-2">
+                <!-- <hr class="navbar-divider my-2 opacity-2"> -->
 
                 <!-- Push content down -->
-                <div class="mt-auto"></div>
+                <!-- <div class="mt-auto"></div> -->
                 <!-- User (md) -->
-                <ul class="navbar-nav">
+                <!-- <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" href="#">
                             <i class="bi bi-person-circle"></i> Account
                         </a>
                     </li>
 
-                    <!-- Divider -->
+
                     <hr class="navbar-divider my-2 opacity-2">
 
                     <li class="nav-item">
@@ -247,7 +235,7 @@ if ($role != 1) {
                             <i class="bi bi-box-arrow-left"></i> Logout
                         </a>
                     </li>
-                </ul>
+                </ul> -->
             </div>
         </div>
     </nav>
@@ -256,6 +244,20 @@ if ($role != 1) {
     <div class="h-screen flex-grow-1 overflow-y-lg-auto">
         <!-- Header -->
         <header class="bg-surface-primary border-bottom pt-6">
+
+            <?php if (isset($_SESSION['message'])) { ?>
+                <div class="alertBox">
+                    <div class="alert alert-success" role="alert">
+                        <h1>
+                            <?php
+                            echo $_SESSION['message'];
+                            unset($_SESSION['message']);
+                            ?>
+                        </h1>
+                    </div>
+                </div>
+            <?php } ?>
+
             <div class="container-fluid">
                 <div class="mb-npx">
                     <div class="row align-items-center">
@@ -272,11 +274,19 @@ if ($role != 1) {
                                     </span>
                                     <span>Home</span>
                                 </a>
-                                <a href="../components/SignOut.php" class="btn d-inline-flex btn-sm btn-primary mx-1">
+
+                                <a href="../components/SignOut.php" class="btn d-inline-flex btn-sm btn-danger mx-1">
                                     <span class=" pe-2">
                                         <i class="bi bi-box-arrow-left"></i>
                                     </span>
                                     <span>Log Out</span>
+                                </a>
+
+                                <a href="../components/ProfilePage.php" class="btn d-inline-flex btn-sm btn-primary mx-1">
+                                    <span>My Profile </span>
+                                    <span class=" ps-2">
+                                        <i class="bi bi-box-arrow-right"></i>
+                                    </span>
                                 </a>
                             </div>
                         </div>
@@ -304,6 +314,8 @@ if ($role != 1) {
             <div class="container-fluid">
                 <!-- Card stats -->
                 <div class="row g-6 mb-6">
+
+                    <!-- Total Users card -->
                     <div class="col-xl-3 col-sm-6 col-12">
                         <div class="card shadow border-0 top_card">
                             <div class="card-body">
@@ -332,6 +344,7 @@ if ($role != 1) {
                             </div>
                         </div>
                     </div>
+
                     <div class="col-xl-3 col-sm-6 col-12">
                         <div class="card shadow border-0 top_card">
                             <div class="card-body">
@@ -360,6 +373,8 @@ if ($role != 1) {
                             </div>
                         </div>
                     </div>
+
+                    <!-- Active Users card -->
                     <div class="col-xl-3 col-sm-6 col-12">
                         <div class="card shadow border-0 top_card">
                             <div class="card-body">
@@ -388,6 +403,8 @@ if ($role != 1) {
                             </div>
                         </div>
                     </div>
+
+                    <!-- Inactive Users card -->
                     <div class="col-xl-3 col-sm-6 col-12">
                         <div class="card shadow border-0 top_card">
                             <div class="card-body">
@@ -416,6 +433,7 @@ if ($role != 1) {
                             </div>
                         </div>
                     </div>
+
                 </div>
 
                 <div id="alertBox"></div>
@@ -426,6 +444,8 @@ if ($role != 1) {
                         <!-- <div class="card-header"> -->
                         <h3 class="h3 mb-0 ls-tight">User's List</h3>
                         <!-- </div> -->
+
+                        <!-- Filter Box -->
                         <div class="">
                             <label for="#userStatusFilter " class="fs-5 primary-text fw-bold me-2">Status Filter :</label>
                             <select id="userStatusFilter" class="fs-6 p-1 fw-bold">
@@ -434,8 +454,11 @@ if ($role != 1) {
                                 <option value="inactive">Inactive</option>
                             </select>
                         </div>
+
+
                     </div>
                     <!-- </div> -->
+
                     <div class="table-responsive">
                         <table id="table_id" class="table table-hover table-nowrap display">
                             <thead class="thead-light">
@@ -452,7 +475,10 @@ if ($role != 1) {
                             <tbody class="tabular_card">
                                 <?php
                                 foreach ($fetch_name_run as $user_data) {
+
                                     if ($user_data['is_deleted'] == 1) { ?>
+
+                                        <!-- If the user's account is deleted, then show this on Frontend table -->
 
                                         <tr data-user-id="<?php echo $user_data['id']; ?>">
                                             <td>
@@ -486,11 +512,8 @@ if ($role != 1) {
 
                                             <td>
                                                 <span class="badge badge-lg badge-dot" id="status-badge-<?php echo $user_data['id']; ?>">
-                                                    <?php if ($user_data['active_status'] == 1) { ?>
-                                                        <i class="bg-success"></i>Active
-                                                    <?php } else { ?>
+                                                   
                                                         <i class="bg-danger"></i>Inactive
-                                                    <?php } ?>
                                                 </span>
                                             </td>
 
@@ -498,7 +521,7 @@ if ($role != 1) {
                                                 <div class="change_status_div">
                                                     <div class="toggle_div">
                                                         <label class="switch">
-                                                            <input disabled="disabled" type="checkbox" class="status-toggle" data-user-id="<?php echo $user_data['id']; ?>" <?php echo $user_data['active_status'] == 1 ? 'checked' : ''; ?>>
+                                                            <input disabled="disabled" type="checkbox" class="status-toggle" data-user-id="<?php echo $user_data['id']; ?>" <?php echo 'unchecked'; ?>>
                                                             <span class="slider"></span>
                                                         </label>
                                                     </div>
@@ -508,41 +531,23 @@ if ($role != 1) {
 
 
                                             <td>
+                                                <form>
+                                                    <select disabled="disabled" name="role" class="btn btn-sm selectBtn">
 
-                                                <?php if ($user_data['user_role_status'] == 1) { ?>
-                                                    <select disabled="disabled" class="btn btn-sm selectBtn">
-                                                        <option value="">SUPER ADMIN</option>
-                                                        <!-- <option value="" disabled="disabled">Super Admin (disabled)</option> -->
-                                                        <!-- <option value="">User</option> -->
+                                                        <option <?php if ($user_data['user_role_status'] == 3) { ?> selected <?php } ?> value="3">USER</option>
+                                                        <option <?php if ($user_data['user_role_status'] == 2) { ?> selected <?php } ?> value="2">ADMIN</option>
+                                                        <!-- <option value="1" disabled="disabled"></option> -->
                                                     </select>
-                                                    <a href="#" class="btn btn-sm btn-primary disabled">Update</a>
 
-                                                    <!-- <button type="button" class="btn btn-sm btn-square btn-danger delBtn">
-                                                    <i class="bi bi-upload"></i>
-                                                </button> -->
+                                                    <input type="hidden" name="user_data_id" value="<?php echo $user_data['id']; ?>">
 
-                                                <?php } else { ?>
-
-                                                    <form action="../src/controller/userDataForAdmin.php" method="post">
-                                                        <select disabled="disabled" name="role" class="btn btn-sm selectBtn">
-
-                                                            <option <?php if ($user_data['user_role_status'] == 3) { ?> selected <?php } ?> value="3">USER</option>
-                                                            <option <?php if ($user_data['user_role_status'] == 2) { ?> selected <?php } ?> value="2">ADMIN</option>
-                                                            <!-- <option value="1" disabled="disabled"></option> -->
-                                                        </select>
-
-                                                        <input type="hidden" name="user_data_id" value="<?php echo $user_data['id']; ?>">
-
-                                                        <!-- <input type="submit" name="update_user_role" class="btn btn-sm btn-primary update-role-btn" value="Update"> -->
+                                                    <!-- <input type="submit" name="update_user_role" class="btn btn-sm btn-primary update-role-btn" value="Update"> -->
 
 
-                                                        <button disabled="disabled" name="update_user_role" type="button" class="btn btn-sm btn-square btn-primary update-role-btn">
-                                                            <i class="bi bi-arrow-repeat"></i>
-                                                        </button>
-                                                    </form>
-
-                                                <?php } ?>
-
+                                                    <button disabled="disabled" name="update_user_role" type="button" class="btn btn-sm btn-square btn-primary update-role-btn">
+                                                        <i class="bi bi-arrow-repeat"></i>
+                                                    </button>
+                                                </form>
                                             </td>
 
                                             <td class="text-end">
@@ -573,8 +578,13 @@ if ($role != 1) {
                                                     <div id="activateModal_<?php echo $user_data['id']; ?>" class="modal">
                                                         <p>Are you sure, you want to activate <?php echo $user_data['user_name']; ?> 's account?</p>
                                                         <a class="closeBtn" href="#" rel="modal:close">Close</a>
-                                                        <a class="activateAnchor" href="#" rel="">Activate</a>
+
+                                                        <a href=<?php echo "http://localhost/PHP_Assesments/Adventaplate/src/controller/deleteUser.php?id=" . $user_data['id'] . "&action=0&roleAction=1" ?> rel="">
+                                                            <button type="button" name="delete_user" class="btn btn-sm btn-success delete-user-btn activateAnchor" data-user-id="<?php echo $user_data['id']; ?>">Activate</button>
+                                                        </a>
                                                     </div>
+
+
 
                                                 <?php } ?>
 
@@ -584,6 +594,8 @@ if ($role != 1) {
                                         </tr>
 
                                     <?php } else { ?>
+
+                                        <!-- If the user's account is not deleted, then show this on Frontend table -->
 
                                         <tr data-user-id="<?php echo $user_data['id']; ?>">
                                             <td>
@@ -595,7 +607,7 @@ if ($role != 1) {
                                                 <?php } ?>
 
                                                 <a class="text-heading font-semibold" href="#">
-                                                    <?php echo strtoupper($user_data['user_name']); ?>
+                                                    <?php echo strtoupper($user_data['user_name'] . '<input type = "hidden" value="AND NOT DELETED">'); ?>
                                                 </a>
                                             </td>
 
@@ -634,40 +646,24 @@ if ($role != 1) {
 
 
                                             <td>
+                                                <!-- <form action="../src/controller/userDataForAdmin.php" method="post"> -->
+                                                <form>
+                                                    <select name="role" class="btn btn-sm selectBtn">
 
-                                                <?php if ($user_data['user_role_status'] == 1) { ?>
-                                                    <select disabled="disabled" class="btn btn-sm selectBtn">
-                                                        <option value="">SUPER ADMIN</option>
-                                                        <!-- <option value="" disabled="disabled">Super Admin (disabled)</option> -->
-                                                        <!-- <option value="">User</option> -->
+                                                        <option <?php if ($user_data['user_role_status'] == 3) { ?> selected <?php } ?> value="3">USER</option>
+                                                        <option <?php if ($user_data['user_role_status'] == 2) { ?> selected <?php } ?> value="2">ADMIN</option>
+
                                                     </select>
-                                                    <a href="#" class="btn btn-sm btn-primary disabled">Update</a>
 
-                                                    <!-- <button type="button" class="btn btn-sm btn-square btn-danger delBtn">
-                                                    <i class="bi bi-upload"></i>
-                                                </button> -->
+                                                    <input type="hidden" name="user_data_id" value="<?php echo $user_data['id']; ?>">
 
-                                                <?php } else { ?>
-
-                                                    <form action="../src/controller/userDataForAdmin.php" method="post">
-                                                        <select name="role" class="btn btn-sm selectBtn">
-
-                                                            <option <?php if ($user_data['user_role_status'] == 3) { ?> selected <?php } ?> value="3">USER</option>
-                                                            <option <?php if ($user_data['user_role_status'] == 2) { ?> selected <?php } ?> value="2">ADMIN</option>
-                                                            <!-- <option value="1" disabled="disabled"></option> -->
-                                                        </select>
-
-                                                        <input type="hidden" name="user_data_id" value="<?php echo $user_data['id']; ?>">
-
-                                                        <!-- <input type="submit" name="update_user_role" class="btn btn-sm btn-primary update-role-btn" value="Update"> -->
+                                                    <!-- <input type="submit" name="update_user_role" class="btn btn-sm btn-primary update-role-btn" value="Update"> -->
 
 
-                                                        <button name="update_user_role" type="button" class="btn btn-sm btn-square btn-primary update-role-btn">
-                                                            <i class="bi bi-arrow-repeat"></i>
-                                                        </button>
-                                                    </form>
-
-                                                <?php } ?>
+                                                    <button name="update_user_role" type="button" class="btn btn-sm btn-square btn-primary update-role-btn">
+                                                        <i class="bi bi-arrow-repeat"></i>
+                                                    </button>
+                                                </form>
 
                                             </td>
 
@@ -684,11 +680,13 @@ if ($role != 1) {
                                                     </button>
                                                 <?php } else { ?>
 
+
                                                     <a href=<?php echo "http://localhost/PHP_Assesments/Adventaplate/components/ProfileForm.php?id=" . $user_data['id']; ?>>
                                                         <button title="Edit User" type="button" class="btn btn-sm btn-square btn-success editBtn">
                                                             <i class="bi bi-pencil-square"></i>
                                                         </button>
                                                     </a>
+
 
                                                     <a href="#delModal_<?php echo $user_data['id']; ?>" rel="modal:open">
                                                         <button title="Delete User" type="button" class="btn btn-sm btn-square btn-danger delBtn">
@@ -696,14 +694,13 @@ if ($role != 1) {
                                                         </button>
                                                     </a>
 
+
                                                     <div id="delModal_<?php echo $user_data['id']; ?>" class="modal">
                                                         <p>Are you sure, you want to delete <?php echo $user_data['user_name']; ?> 's account?</p>
                                                         <a class="closeBtn" href="#" rel="modal:close">Close</a>
-                                                        <a class="delAnchor" href="#" rel="">
-                                                            <input type="hidden" name="user_data_delete" value="<?php echo $user_data['id']; ?>">
-                                                            <button title="Delete User" type="button" class="btn btn-sm btn-square btn-danger delBtn delete_user_btn">
-                                                                <i class="bi bi-trash-fill"></i>
-                                                            </button>
+
+                                                        <a href=<?php echo "http://localhost/PHP_Assesments/Adventaplate/src/controller/deleteUser.php?id=" . $user_data['id'] . "&action=1&roleAction=0" ?> rel="">
+                                                            <button type="button" name="delete_user" class="btn btn-sm btn-danger delete-user-btn delAnchor" data-user-id="<?php echo $user_data['id']; ?>">Delete</button>
                                                         </a>
                                                     </div>
 
@@ -752,7 +749,7 @@ if ($role != 1) {
         const table = $('#table_id').DataTable({
             "paging": true,
             "pageLength": 5,
-            "order": [5, 'asc'],
+            "order": [[6, 'asc'], [5, 'desc']],
             "pagingType": "simple_numbers",
             "language": {
                 "paginate": {
@@ -790,12 +787,8 @@ if ($role != 1) {
             }
         });
 
-        // Attach an event listener to the Save buttons
-        // $('.save-status-btn').on('click', function() {
-        //     const userId = $(this).data('user-id');
-        //     const isActive = $(this).prev('.toggle_div').find('.status-toggle').prop('checked') ? 1 : 0;
-        //     const statusBadge = $('#status-badge-' + userId);
 
+        // For updating the status of user to be Active or Inactive
         $('#table_id').on('click', '.save-status-btn', function() {
             const userId = $(this).closest('tr').data('user-id');
             const isActive = $(this).siblings('.toggle_div').find('.status-toggle').prop('checked') ? 1 : 0;
@@ -854,6 +847,7 @@ if ($role != 1) {
         });
 
 
+        // For Updating the User's role to be Admin or User
         $('#table_id').on('click', '.update-role-btn', function(e) {
             e.preventDefault(); // Prevent the default form submission
 
@@ -905,13 +899,14 @@ if ($role != 1) {
         });
 
 
-
-
-        // For deleting the user's account
-
-
-
-
-
     });
+</script>
+
+<script>
+    // For alerting the successful Login message
+    const alertBox = document.querySelector(".alertBox");
+
+    setTimeout(() => {
+        alertBox.innerHTML = "";
+    }, 3000);
 </script>
