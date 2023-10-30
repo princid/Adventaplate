@@ -13,7 +13,7 @@ include("../src/controller/userData.php");
     <div class="nav">
         <!-- <div class="brand_logo"> -->
         <!-- <a href=""> -->
-            <h3 class="brand_logo">Adventaplate <span class="trademark">&reg;</span> </h3>
+        <h3 class="brand_logo">Adventaplate <span class="trademark">&reg;</span> </h3>
         <!-- </a> -->
 
         <!-- </div> -->
@@ -106,6 +106,8 @@ include("../src/controller/userData.php");
 
 
             <?php } else { ?>
+                <a href="<?php echo BASE_URL ?>components/ContactPage.php" class="nav-link">Contact Us</a>
+                
                 <a href="<?php echo BASE_URL ?>components/TnCPage.php" class="nav-link">T&C</a>
 
                 <div class="logBtn">
