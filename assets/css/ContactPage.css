@@ -143,3 +143,25 @@ textarea{
     margin-top: 5px;
     font-weight: normal;
 }
+
+
+footer{
+    background: rgb(18, 71, 5);
+    background: linear-gradient(169deg, rgb(36, 5, 71) 0%, rgba(20, 0, 36, 1) 50%, rgb(60, 5, 71) 100%);
+    /* background: rgb(222,24,224);
+    background: linear-gradient(188deg, rgba(222,24,224,1) 8%, rgba(90,21,174,1) 56%, rgba(76,17,112,1) 100%); */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 20px;
+    margin-top: 40px;
+}
+
+
+.contactFooter{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+}
