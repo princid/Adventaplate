@@ -246,7 +246,7 @@ if ($role != 1) {
                         <!-- Actions -->
                         <div class="col-sm-6 col-12 text-sm-end">
                             <div class="mx-n1">
-                                <a href="../components/HomePage.php" class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
+                                <a href="../components/HomePage.php" class="btn d-inline-flex btn-sm btn-warning border-base mx-1">
                                     <span class=" pe-2">
                                         <i class="bi bi-house"></i>
                                     </span>
@@ -261,10 +261,10 @@ if ($role != 1) {
                                 </a>
 
                                 <a href="../components/ProfilePage.php" class="btn d-inline-flex btn-sm btn-primary mx-1">
-                                    <span>My Profile </span>
-                                    <span class=" ps-2">
-                                        <i class="bi bi-box-arrow-right"></i>
+                                    <span class=" pe-2">
+                                        <i class="bi bi-person-lines-fill"></i>
                                     </span>
+                                    <span>My Profile </span>
                                 </a>
                             </div>
                         </div>
@@ -490,8 +490,8 @@ if ($role != 1) {
 
                                             <td>
                                                 <span class="badge badge-lg badge-dot" id="status-badge-<?php echo $user_data['id']; ?>">
-                                                   
-                                                        <i class="bg-danger"></i>Inactive
+
+                                                    <i class="bg-danger"></i>Inactive
                                                 </span>
                                             </td>
 
@@ -727,7 +727,10 @@ if ($role != 1) {
         const table = $('#table_id').DataTable({
             "paging": true,
             "pageLength": 5,
-            "order": [[6, 'asc'], [5, 'desc']],
+            "order": [
+                [6, 'asc'],
+                [5, 'desc']
+            ],
             "pagingType": "simple_numbers",
             "language": {
                 "paginate": {
