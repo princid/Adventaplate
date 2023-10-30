@@ -4,10 +4,10 @@ include("../includes/header.php");
 include("Navbar.php");
 
 // Checking if Session is active or not
-if (empty($_SESSION['id'])) {
-    header("location: ./SignIn.php");
-    exit();
-}
+// if (empty($_SESSION['id'])) {
+//     header("location: ./SignIn.php");
+//     exit();
+// }
 ?>
 
 <link rel="stylesheet" href="../assets/css/ContactPage.css">
@@ -22,19 +22,19 @@ if (empty($_SESSION['id'])) {
         <h2>Send us a message</h2>
         <form action="<?php echo BASE_URL ?>src/model/contactQuery.php" name="contact_form" method="post">
             <label for="name">*Name :
-                <input type="text" id="name" name="name" >
+                <input type="text" id="name" name="name">
                 <div class="formError name"></div>
             </label>
             <label for="email">*E-mail :
-                <input type="email" id="email" name="email" >
+                <input type="email" id="email" name="email">
                 <div class="formError email"></div>
             </label>
             <label for="phone">*Phone :
-                <input type="number" id="phone" name="phone" >
+                <input type="number" id="phone" name="phone">
                 <div class="formError phone"></div>
             </label>
             <label for="message">*Message :
-                <textarea name="message" id="message" cols="30" rows="10" ></textarea>
+                <textarea name="message" id="message" cols="30" rows="10"></textarea>
                 <div class="formError message"></div>
             </label>
             <button type="submit" class="submit_btn">SEND <i class="fa-solid fa-paper-plane" style="color: #fff;"></i></button>
@@ -68,16 +68,20 @@ if (empty($_SESSION['id'])) {
     </div>
 </div>
 
-<?php
-    $bottom = "bottom";
-    include("./Footer.php") 
-?>
+<!-- <?php
+// $bottom = "bottom";
+// include("./Footer.php")
+?> -->
+
+<footer class="contactFooter">
+    <!-- &copy; - for Copyright icon -->
+    <h4>2023 &copy; Adventaplate - Made with ❤ by Prince Kumar Singh.</h4>
+</footer>
 
 <!-- On My laptop only -->
 <!-- <?php
-// $bottom = "";
-// include("./Footer.php") 
-?> -->
+        // $bottom = "";
+        // include("./Footer.php") 
+        ?> -->
 
 <script src="../assets/js/contactFormValidation.js"></script>
-
