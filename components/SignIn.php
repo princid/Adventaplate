@@ -24,18 +24,22 @@ $message = "";
 
 <section class="main_container">
 
-    <?php if (isset($_SESSION['message'])) { ?>
-        <div class="alert alert-danger" role="alert">
-            <h1>
-                <?php
-                echo $_SESSION['message'];
-                unset($_SESSION['message']);
-                ?>
-            </h1>
-        </div>
-    <?php } ?>
+    <!-- <div class="alertMessage"> -->
 
+        <?php if (isset($_SESSION['message'])) { ?>
+            <div class="alertBox">
+                <div class="alert alert-danger" role="alert">
+                    <h1>
+                        <?php
+                        echo $_SESSION['message'];
+                        unset($_SESSION['message']);
+                        ?>
+                    </h1>
+                </div>
+            </div>
+        <?php } ?>
 
+    <!-- </div> -->
 
     <!-- <div class="formImage">
     <img src="../assets/images/banner.jpg" alt="">
@@ -93,7 +97,7 @@ $message = "";
             $user_email = mysqli_real_escape_string($conn, $_POST['email']);
             $user_password = md5($_POST['password']);
 
-            $sql = "SELECT * FROM `users_table` WHERE user_email = '{$user_email}' AND user_password = '{$user_password}'";
+            $sql = "SELECT * FROM `users_table` WHERE user_email = '{$user_email}' AND user_password = '{$user_password}' AND is_deleted = 0 ";
 
             $result = mysqli_query($conn, $sql) or die("Query failed");
 
@@ -110,15 +114,23 @@ $message = "";
                         $_SESSION["message"] = "Logged in successfully";
                         header("location: ../admin/Dashboard.php");
                     } else {
+                        // if ($row['is_deleted'] == '1') {
+                        //     $_SESSION["message"] = "OOPS...!! Your account has been deleted! Please Contact admin to activate your account.";
+                        //     // echo($row['is_deleted'] == 1);
+                        //     // exit;
+                        //     header("location: http://localhost/PHP_Assesments/Adventaplate/components/SignIn.php");
+                        // }else{
                         $_SESSION["message"] = "Logged in successfully";
                         header("location: ./ProfilePage.php");
+                        // }
+
                     }
                 }
             } else {
                 // echo '<div class="formError">*Email and password did not match.</div>';
                 // echo '<script>alert("Email & Password did not match")</script>';
 
-                $_SESSION["message"] = "Invalid Login";
+                $_SESSION["message"] = "OOPS...!! Something went wrong! Please Try again.";
                 header("location:http://localhost/PHP_Assesments/Adventaplate/components/SignIn.php");
             }
 
@@ -165,6 +177,15 @@ $message = "";
     //         });
     //     });
 </script>
+
+<!-- <script>
+    // For alerting the successful Login message
+    const alertBox = document.querySelector(".alertBox");
+
+    setTimeout(() => {
+        alertBox.innerHTML = "";
+    }, 3000);
+</script> -->
 
 <!-- </body>
 
